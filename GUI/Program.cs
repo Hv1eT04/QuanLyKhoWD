@@ -1,22 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
 namespace GUI
 {
-    internal class Program
+    internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+
+            // 1. Khởi tạo Form đăng nhập
+            FormDangNhap login = new FormDangNhap();
+
+            // 2. Hiện Form đăng nhập dưới dạng Dialog (chờ xử lý xong mới chạy tiếp)
+            if (login.ShowDialog() == DialogResult.OK)
+            {
+                // 3. Nếu Login trả về OK (do ta gán ở bước trên), thì mới chạy FormMain
+                Application.Run(new FormMain());
+            }
+            else
+            {
+                // Nếu đóng form login hoặc login fail thì thoát ứng dụng
+                Application.Exit();
+            }
         }
     }
 }

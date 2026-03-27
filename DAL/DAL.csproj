@@ -93,6 +93,7 @@
     <Compile Include="DanhMucDAL.cs" />
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="HangHoaDAL.cs" />
+    <Compile Include="NguoiDungDAL.cs" />
     <Compile Include="NhaCCDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
