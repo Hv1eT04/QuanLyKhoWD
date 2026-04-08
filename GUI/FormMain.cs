@@ -30,6 +30,7 @@ namespace GUI
             {
                 lblHome.ForeColor = Color.FromArgb(51, 51, 51);
             };
+            this.WindowState = FormWindowState.Maximized;
         }
         //Hàm mở Form con trong panelNoiDung
         private Form currentFormChild;
