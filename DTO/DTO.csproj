@@ -91,10 +91,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaoCaoTongHopDTO.cs" />
+    <Compile Include="CTPhieuNhapDTO.cs" />
+    <Compile Include="CTPhieuXuatDTO.cs" />
     <Compile Include="DanhMucDTO.cs" />
+    <Compile Include="HangChonDTO.cs" />
     <Compile Include="HangHoaDTO.cs" />
     <Compile Include="NguoiDungDTO.cs" />
     <Compile Include="NhaCCDTO.cs" />
+    <Compile Include="PhieuNhapDTO.cs" />
+    <Compile Include="PhieuXuatDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
