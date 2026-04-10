@@ -90,7 +90,6 @@ namespace GUI
             LoadHangHoa();
             LoadDanhMuc();
             LoadTrangThai();
-            ResetForm();
         }
         void LoadHangHoa()
         {
@@ -190,9 +189,7 @@ namespace GUI
 
         private void btnMoi_Click(object sender, EventArgs e)
         {
-            LoadHangHoa();
-            LoadDanhMuc();
-            LoadTrangThai();
+            ResetForm();
         }
 
         private void chkHienNgung_CheckedChanged(object sender, EventArgs e)
