@@ -91,11 +91,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaoCaoDAL.cs" />
+    <Compile Include="CTPhieuXuatDAL.cs" />
+    <Compile Include="CTPhieuNhapDAL.cs" />
     <Compile Include="DanhMucDAL.cs" />
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="HangHoaDAL.cs" />
     <Compile Include="NguoiDungDAL.cs" />
     <Compile Include="NhaCCDAL.cs" />
+    <Compile Include="PhieuNhapDAL.cs" />
+    <Compile Include="PhieuXuatDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +111,9 @@
       <Project>{430fd200-5dc8-42ef-b38b-d9850a97d88e}</Project>
       <Name>DTO</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

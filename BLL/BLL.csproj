@@ -91,10 +91,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaoCaoBLL.cs" />
+    <Compile Include="CTPhieuNhapBLL.cs" />
+    <Compile Include="CTPhieuXuatBLL.cs" />
     <Compile Include="DanhMucBLL.cs" />
+    <Compile Include="HangChonBLL.cs" />
     <Compile Include="HangHoaBLL.cs" />
     <Compile Include="NguoiDungBLL.cs" />
     <Compile Include="NhaCCBLL.cs" />
+    <Compile Include="PhieuNhapBLL.cs" />
+    <Compile Include="PhieuXuatBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +111,9 @@
       <Project>{430fd200-5dc8-42ef-b38b-d9850a97d88e}</Project>
       <Name>DTO</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
