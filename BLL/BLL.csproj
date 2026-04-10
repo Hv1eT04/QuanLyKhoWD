@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaoCaoBLL.cs" />
     <Compile Include="DanhMucBLL.cs" />
     <Compile Include="HangHoaBLL.cs" />
     <Compile Include="NguoiDungBLL.cs" />

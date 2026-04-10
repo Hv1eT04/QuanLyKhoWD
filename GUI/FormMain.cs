@@ -90,5 +90,10 @@ namespace GUI
         {
             OpenChildForm(new FormNCC());
         }
+
+        private void btnBaocao_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new FormBaoCao());
+        }
     }
 }

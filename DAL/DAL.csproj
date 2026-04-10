@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaoCaoDAL.cs" />
     <Compile Include="DanhMucDAL.cs" />
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="HangHoaDAL.cs" />
