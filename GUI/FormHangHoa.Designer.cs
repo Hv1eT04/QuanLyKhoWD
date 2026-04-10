@@ -111,7 +111,7 @@
             this.btnThem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnThem.Location = new System.Drawing.Point(925, 44);
             this.btnThem.Name = "btnThem";
-            this.btnThem.Size = new System.Drawing.Size(90, 45);
+            this.btnThem.Size = new System.Drawing.Size(99, 45);
             this.btnThem.TabIndex = 34;
             this.btnThem.Text = "+ Thêm";
             this.btnThem.UseVisualStyleBackColor = false;

@@ -95,6 +95,7 @@ namespace GUI
         private void btnBaocao_Click(object sender, EventArgs e)
         {
             OpenChildForm(new FormBaoCao());
+        }
         private void btnphieunhap_Click(object sender, EventArgs e)
         {
             OpenChildForm(new FormPhieuNhap());

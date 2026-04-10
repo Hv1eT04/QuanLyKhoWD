@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="FormDangNhap.Designer.cs">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormChonHang.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,6 +201,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormDangNhap.resx">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormChonHang.resx">
       <DependentUpon>FormChonHang.cs</DependentUpon>
     </EmbeddedResource>
