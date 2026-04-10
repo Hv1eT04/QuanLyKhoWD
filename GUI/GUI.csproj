@@ -69,10 +69,8 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-<<<<<<< HEAD
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
-=======
     <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
     </Reference>
@@ -91,7 +89,6 @@
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
->>>>>>> 3671466e37e1f6a966ca95b3600385f71afe926c
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -104,7 +101,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="dsBaoCao.cs">
       <DependentUpon>dsBaoCao.xsd</DependentUpon>
     </Compile>
@@ -124,7 +120,6 @@
     </Compile>
     <Compile Include="FormDangNhap.Designer.cs">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
-=======
     <Compile Include="FormChonHang.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,7 +137,6 @@
     </Compile>
     <Compile Include="FormCTPhieuXuat.Designer.cs">
       <DependentUpon>FormCTPhieuXuat.cs</DependentUpon>
->>>>>>> 3671466e37e1f6a966ca95b3600385f71afe926c
     </Compile>
     <Compile Include="FormDanhMuc.cs">
       <SubType>Form</SubType>
@@ -201,13 +195,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <EmbeddedResource Include="FormBaoCao.resx">
       <DependentUpon>FormBaoCao.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDangNhap.resx">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
-=======
     <EmbeddedResource Include="FormChonHang.resx">
       <DependentUpon>FormChonHang.cs</DependentUpon>
     </EmbeddedResource>
@@ -216,7 +208,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormCTPhieuXuat.resx">
       <DependentUpon>FormCTPhieuXuat.cs</DependentUpon>
->>>>>>> 3671466e37e1f6a966ca95b3600385f71afe926c
     </EmbeddedResource>
     <EmbeddedResource Include="FormDanhMuc.resx">
       <DependentUpon>FormDanhMuc.cs</DependentUpon>
@@ -264,7 +255,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-<<<<<<< HEAD
     <None Include="dsBaoCao.xsc">
       <DependentUpon>dsBaoCao.xsd</DependentUpon>
     </None>
@@ -276,9 +266,7 @@
     <None Include="dsBaoCao.xss">
       <DependentUpon>dsBaoCao.xsd</DependentUpon>
     </None>
-=======
     <None Include="packages.config" />
->>>>>>> 3671466e37e1f6a966ca95b3600385f71afe926c
     <None Include="Resources\icon hàng hóa.png" />
   </ItemGroup>
   <ItemGroup>
