@@ -21,7 +21,6 @@ namespace GUI
         public FormHangHoa()
         {
             InitializeComponent();
-            MessageBox.Show("FormHangHoa chạy");
         }
 
 
@@ -89,6 +88,7 @@ namespace GUI
             LoadHangHoa();
             LoadDanhMuc();
             LoadTrangThai();
+            ResetForm();
         }
         void LoadHangHoa()
         {
@@ -181,7 +181,9 @@ namespace GUI
 
         private void btnMoi_Click(object sender, EventArgs e)
         {
-            ResetForm();
+            LoadHangHoa();
+            LoadDanhMuc();
+            LoadTrangThai();
         }
 
         private void chkHienNgung_CheckedChanged(object sender, EventArgs e)

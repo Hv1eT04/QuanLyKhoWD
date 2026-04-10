@@ -90,5 +90,15 @@ namespace GUI
         {
             OpenChildForm(new FormNCC());
         }
+
+        private void btnphieunhap_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new FormPhieuNhap());
+        }
+
+        private void btnphieuxuat_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new FormPhieuXuat());
+        }
     }
 }

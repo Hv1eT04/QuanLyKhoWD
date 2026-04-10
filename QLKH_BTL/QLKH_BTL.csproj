@@ -4,6 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+<UseWindowsForms>true</UseWindowsForms>
     <ProjectGuid>{B5139694-F755-4641-8903-C698FD4089E6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>QLKH_BTL</RootNamespace>
@@ -141,4 +142,5 @@
     <Folder Include="BLL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<UseWindowsForms>true</UseWindowsForms>
 </Project>

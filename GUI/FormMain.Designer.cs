@@ -29,21 +29,25 @@
         private void InitializeComponent()
         {
             this.panelMenu = new System.Windows.Forms.Panel();
+            this.btnNCC = new System.Windows.Forms.Button();
             this.lblHome = new System.Windows.Forms.Label();
+            this.picHome = new System.Windows.Forms.PictureBox();
             this.btnDanhMuc = new System.Windows.Forms.Button();
             this.btnHangHoa = new System.Windows.Forms.Button();
             this.panelNoiDung = new System.Windows.Forms.Panel();
             this.picBia = new System.Windows.Forms.PictureBox();
-            this.picHome = new System.Windows.Forms.PictureBox();
-            this.btnNCC = new System.Windows.Forms.Button();
+            this.btnphieunhap = new System.Windows.Forms.Button();
+            this.btnphieuxuat = new System.Windows.Forms.Button();
             this.panelMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picHome)).BeginInit();
             this.panelNoiDung.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBia)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picHome)).BeginInit();
             this.SuspendLayout();
             // 
             // panelMenu
             // 
+            this.panelMenu.Controls.Add(this.btnphieuxuat);
+            this.panelMenu.Controls.Add(this.btnphieunhap);
             this.panelMenu.Controls.Add(this.btnNCC);
             this.panelMenu.Controls.Add(this.lblHome);
             this.panelMenu.Controls.Add(this.picHome);
@@ -55,6 +59,16 @@
             this.panelMenu.Size = new System.Drawing.Size(215, 523);
             this.panelMenu.TabIndex = 0;
             // 
+            // btnNCC
+            // 
+            this.btnNCC.Location = new System.Drawing.Point(0, 193);
+            this.btnNCC.Name = "btnNCC";
+            this.btnNCC.Size = new System.Drawing.Size(217, 51);
+            this.btnNCC.TabIndex = 4;
+            this.btnNCC.Text = "Nhà cung cấp";
+            this.btnNCC.UseVisualStyleBackColor = true;
+            this.btnNCC.Click += new System.EventHandler(this.btnNCC_Click);
+            // 
             // lblHome
             // 
             this.lblHome.AutoSize = true;
@@ -65,6 +79,17 @@
             this.lblHome.TabIndex = 3;
             this.lblHome.Text = " Kho Hàng Hóa";
             this.lblHome.Click += new System.EventHandler(this.lblHome_Click);
+            // 
+            // picHome
+            // 
+            this.picHome.Image = global::GUI.Properties.Resources.icon_Home;
+            this.picHome.Location = new System.Drawing.Point(3, 12);
+            this.picHome.Name = "picHome";
+            this.picHome.Size = new System.Drawing.Size(50, 50);
+            this.picHome.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picHome.TabIndex = 2;
+            this.picHome.TabStop = false;
+            this.picHome.Click += new System.EventHandler(this.picHome_Click);
             // 
             // btnDanhMuc
             // 
@@ -106,26 +131,25 @@
             this.picBia.TabIndex = 0;
             this.picBia.TabStop = false;
             // 
-            // picHome
+            // btnphieunhap
             // 
-            this.picHome.Image = global::GUI.Properties.Resources.icon_Home;
-            this.picHome.Location = new System.Drawing.Point(3, 12);
-            this.picHome.Name = "picHome";
-            this.picHome.Size = new System.Drawing.Size(50, 50);
-            this.picHome.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picHome.TabIndex = 2;
-            this.picHome.TabStop = false;
-            this.picHome.Click += new System.EventHandler(this.picHome_Click);
+            this.btnphieunhap.Location = new System.Drawing.Point(-2, 250);
+            this.btnphieunhap.Name = "btnphieunhap";
+            this.btnphieunhap.Size = new System.Drawing.Size(217, 51);
+            this.btnphieunhap.TabIndex = 5;
+            this.btnphieunhap.Text = "Phiếu nhập";
+            this.btnphieunhap.UseVisualStyleBackColor = true;
+            this.btnphieunhap.Click += new System.EventHandler(this.btnphieunhap_Click);
             // 
-            // btnNCC
+            // btnphieuxuat
             // 
-            this.btnNCC.Location = new System.Drawing.Point(0, 193);
-            this.btnNCC.Name = "btnNCC";
-            this.btnNCC.Size = new System.Drawing.Size(217, 51);
-            this.btnNCC.TabIndex = 4;
-            this.btnNCC.Text = "Nhà cung cấp";
-            this.btnNCC.UseVisualStyleBackColor = true;
-            this.btnNCC.Click += new System.EventHandler(this.btnNCC_Click);
+            this.btnphieuxuat.Location = new System.Drawing.Point(-2, 307);
+            this.btnphieuxuat.Name = "btnphieuxuat";
+            this.btnphieuxuat.Size = new System.Drawing.Size(217, 51);
+            this.btnphieuxuat.TabIndex = 6;
+            this.btnphieuxuat.Text = "Phiếu xuất";
+            this.btnphieuxuat.UseVisualStyleBackColor = true;
+            this.btnphieuxuat.Click += new System.EventHandler(this.btnphieuxuat_Click);
             // 
             // FormMain
             // 
@@ -139,9 +163,9 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.panelMenu.ResumeLayout(false);
             this.panelMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picHome)).EndInit();
             this.panelNoiDung.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picBia)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picHome)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -156,5 +180,7 @@
         private System.Windows.Forms.Label lblHome;
         private System.Windows.Forms.PictureBox picHome;
         private System.Windows.Forms.Button btnNCC;
+        private System.Windows.Forms.Button btnphieuxuat;
+        private System.Windows.Forms.Button btnphieunhap;
     }
 }

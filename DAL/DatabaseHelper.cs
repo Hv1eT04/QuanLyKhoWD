@@ -9,16 +9,30 @@ namespace DAL
 {
     public class DatabaseHelper
     {
-        string connectionString = "server=localhost; database= quanlykhodb ;user=root; password=12345; charset=utf8";
-        public DataTable ExecuteQuery(string sql)
+        string connectionString = "server=localhost; database= quanlykhodb ;user=root; password=12346; charset=utf8";
+        public DataTable ExecuteQuery(string sql, params MySqlParameter[] parameters)
         {
-            MySqlConnection conn = new MySqlConnection(connectionString);
-            MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
             DataTable dt = new DataTable();
-            da.Fill(dt);
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    if (parameters != null)
+                        cmd.Parameters.AddRange(parameters);
+
+                    using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                    }
+                }
+            }
+
             return dt;
         }
-        public int ExecuteNonQuery(string sql, MySqlParameter[] parameters)
+        public int ExecuteNonQuery(string sql, params MySqlParameter[] parameters)
         {
            MySqlConnection conn = new MySqlConnection(connectionString);
            conn.Open();
@@ -29,6 +43,21 @@ namespace DAL
            }
             int result = cmd.ExecuteNonQuery();
            return result;
+        }
+        public object ExecuteScalar(string sql, params MySqlParameter[] parameters)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    if (parameters != null)
+                        cmd.Parameters.AddRange(parameters);
+
+                    return cmd.ExecuteScalar();
+                }
+            }
         }
     }
 }
