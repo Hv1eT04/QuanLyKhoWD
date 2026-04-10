@@ -28,25 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnLuu = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.btnluu = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // btnLuu
-            // 
-            this.btnLuu.Location = new System.Drawing.Point(369, 327);
-            this.btnLuu.Name = "btnLuu";
-            this.btnLuu.Size = new System.Drawing.Size(130, 60);
-            this.btnLuu.TabIndex = 0;
-            this.btnLuu.Text = "Lưu";
-            this.btnLuu.UseVisualStyleBackColor = true;
-            this.btnLuu.Click += new System.EventHandler(this.btnLuu_Click);
             // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(585, 48);
+            this.comboBox1.Location = new System.Drawing.Point(585, 95);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 24);
             this.comboBox1.TabIndex = 1;
@@ -54,19 +44,28 @@
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(585, 113);
+            this.comboBox2.Location = new System.Drawing.Point(585, 185);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(121, 24);
             this.comboBox2.TabIndex = 2;
+            // 
+            // btnluu
+            // 
+            this.btnluu.Location = new System.Drawing.Point(335, 328);
+            this.btnluu.Name = "btnluu";
+            this.btnluu.Size = new System.Drawing.Size(145, 60);
+            this.btnluu.TabIndex = 3;
+            this.btnluu.Text = "Lưu";
+            this.btnluu.UseVisualStyleBackColor = true;
             // 
             // FormChonHang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(874, 486);
+            this.Controls.Add(this.btnluu);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.btnLuu);
             this.Name = "FormChonHang";
             this.Text = "FormChonHang";
             this.ResumeLayout(false);
@@ -74,9 +73,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnLuu;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button btnluu;
     }
 }
