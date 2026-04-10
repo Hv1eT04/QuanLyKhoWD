@@ -16,6 +16,10 @@ namespace BLL
         {
             return dal.GetAllHangHoa();
         }
+        public DataTable TimKiemHangHoa(string keyword)
+        {
+            return dal.TimKiemHangHoa(keyword);
+        }
         public string TaoMaCode()
         {
             DataTable dt = dal.GetAllHangHoa();
@@ -50,5 +54,6 @@ namespace BLL
             }
             return "Còn Hàng";
         }
+       
     }
 }

@@ -21,7 +21,6 @@ namespace GUI
         public FormHangHoa()
         {
             InitializeComponent();
-            MessageBox.Show("FormHangHoa chạy");
         }
 
 
@@ -62,6 +61,8 @@ namespace GUI
                     LoadHangHoa();
                     MessageBox.Show("Đã ngừng kinh doanh!");
                 }
+                BackColor = Color.Crimson;
+                return;
             }
             if (DGVHangHoa.Columns[e.ColumnIndex].Name == "btnKhoiPhuc")
             {
@@ -92,7 +93,7 @@ namespace GUI
         }
         void LoadHangHoa()
         {
-            DataTable dt;
+            DataTable dt = bus.GetAllHangHoaDangBan();
             if (chkHienNgung.Checked)
                 dt = bus.GetAllHangHoa(); // tất cả
             else
@@ -106,11 +107,16 @@ namespace GUI
 
             foreach (DataRow dr in dt.Rows)
             {
+                if (dr["TrangThai"] == DBNull.Value) continue;
                 int tt = Convert.ToInt32(dr["TrangThai"]);
                 dr["TenTrangThai"] = (tt == 1) ? "Còn bán" : "Ngừng bán";
             }
             //Tô màu xám nếu ngừng kinh doanh (trạng thái = 0)
             DGVHangHoa.DataSource = dt;
+            //Ẩn cột
+            DGVHangHoa.Columns["trangthai"].Visible = false;
+            DGVHangHoa.Columns["muccanhbao"].Visible = false;
+            DGVHangHoa.Columns["btnKhoiPhuc"].Visible = chkHienNgung.Checked;
             int last = DGVHangHoa.Columns.Count;
 
             DGVHangHoa.Columns["btnSua"].DisplayIndex = last - 3;
@@ -118,16 +124,18 @@ namespace GUI
             DGVHangHoa.Columns["btnKhoiPhuc"].DisplayIndex = last - 1;
             foreach (DataGridViewRow row in DGVHangHoa.Rows)
             {
-                if (row.Cells["trangthai"].Value != null)
-                {
-                    int tt = Convert.ToInt32(row.Cells["trangthai"].Value);
+                var value = row.Cells["trangthai"].Value;
 
-                    if (tt == 0)
-                    {
-                        row.DefaultCellStyle.BackColor = Color.LightGray;
-                        row.DefaultCellStyle.ForeColor = Color.Black;
-                    }
+                if (value == null || value == DBNull.Value) continue;
+
+                int tt = Convert.ToInt32(value);
+
+                if (tt == 0)
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightGray;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
                 }
+
             }
         }
 
@@ -150,13 +158,13 @@ namespace GUI
         {
             var list = new List<object>
             {
-                new { Value = 1, Text = "Còn hàng" },
-                new { Value = 0, Text = "Hết hàng" }
+                new { Value = 0, Text = "Còn hàng" },
+                new { Value = 1, Text = "Hết hàng" }
             };
             cbbTrangThai.DataSource = list;
             cbbTrangThai.DisplayMember = "Text";
             cbbTrangThai.ValueMember = "Value";
-            cbbTrangThai.SelectedIndex = 1;
+            cbbTrangThai.SelectedIndex = 0;
         }
         private void btnThem_Click(object sender, EventArgs e)
         {
@@ -187,6 +195,28 @@ namespace GUI
         private void chkHienNgung_CheckedChanged(object sender, EventArgs e)
         {
             LoadHangHoa();
+        }
+
+    
+
+        private void txtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtTimKiem.Text.Trim();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                LoadHangHoa(); // load lại danh sách đang bán
+            }
+            else
+            {
+                DGVHangHoa.DataSource = bus.TimKiemHangHoa(keyword);
+            }
+        }
+
+        private void txtTimKiem_Enter(object sender, EventArgs e)
+        {
+            txtTimKiem.Text = "";
+            txtTimKiem.ForeColor = Color.Black;
         }
     }
 }

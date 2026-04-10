@@ -75,5 +75,18 @@ namespace DAL
             };
             return db.ExecuteNonQuery(sql, param);
         }
+        public DataTable TimKiemHangHoa(string keyword)
+        {
+            string sql = @"SELECT * FROM HangHoa 
+                   WHERE TrangThai = 1 
+                   AND (TenHang LIKE @kw OR MaCode LIKE @kw)";
+
+            MySqlParameter[] parameters = new MySqlParameter[]
+            {
+                new MySqlParameter("@kw", "%" + keyword + "%")
+            };
+
+            return db.ExecuteQuery(sql, parameters);
+        }
     }
 }
