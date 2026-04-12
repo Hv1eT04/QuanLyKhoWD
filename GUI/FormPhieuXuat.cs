@@ -1,127 +1,147 @@
 ﻿using BLL;
 using DTO;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Security.Cryptography;
 using System.Windows.Forms;
-
 
 namespace GUI
 {
     public partial class FormPhieuXuat : Form
     {
         PhieuXuatBLL bll = new PhieuXuatBLL();
+        private NguoiDungDTO loginUser;
 
-        public FormPhieuXuat()
+        public FormPhieuXuat(NguoiDungDTO user)
         {
             InitializeComponent();
-        }
+            this.loginUser = user;
 
-        private void FormPhieuXuat_Load(object sender, EventArgs e)
-        {
+            SetupGrid();
             LoadPhieuXuat();
             TinhTongTien();
         }
 
-        void LoadPhieuXuat()
+        private void SetupGrid()
         {
-            dgvPhieuXuat.DataSource = bll.GetAllPhieuXuat();
+            dgvPhieuXuat.AutoGenerateColumns = false;
+            dgvPhieuXuat.Columns.Clear();
+
+            dgvPhieuXuat.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "maphieuxuat", HeaderText = "ID", Name = "maphieuxuat", Visible = false });
+
+            dgvPhieuXuat.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "sophieu", HeaderText = "Số Phiếu", Name = "sophieu", Width = 120 });
+            dgvPhieuXuat.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "nguoilap", HeaderText = "Người Lập", Name = "nguoilap", Width = 150 });
+            dgvPhieuXuat.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ngaytao", HeaderText = "Ngày Tạo", Name = "ngaytao", Width = 130 });
+            dgvPhieuXuat.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ghichu", HeaderText = "Ghi Chú", Name = "ghichu", Width = 200 });
+            dgvPhieuXuat.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "trangthai", HeaderText = "Trạng Thái", Name = "trangthai", Width = 100 });
+
+            DataGridViewButtonColumn btnXem = new DataGridViewButtonColumn
+            {
+                HeaderText = "Xem",
+                Text = "Xem",
+                Name = "btnxem",
+                UseColumnTextForButtonValue = true,
+                Width = 70
+            };
+            dgvPhieuXuat.Columns.Add(btnXem);
+
+            DataGridViewButtonColumn btnSua = new DataGridViewButtonColumn
+            {
+                HeaderText = "Sửa",
+                Text = "Sửa",
+                Name = "btnsua",
+                UseColumnTextForButtonValue = true,
+                Width = 70
+            };
+            dgvPhieuXuat.Columns.Add(btnSua);
         }
 
-        void TinhTongTien()
+        private void LoadPhieuXuat()
         {
-            CTPhieuXuatBLL bllCT = new CTPhieuXuatBLL();
+            try
+            {
+                dgvPhieuXuat.DataSource = bll.GetAllPhieuXuat();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải danh sách: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
+        private void TinhTongTien()
+        {
             decimal tong = bll.GetTongTien();
-
             txtTongTien.Text = tong.ToString("N0") + " VND";
-        }
-
-        private void btntaophieu_Click(object sender, EventArgs e)
-        {
-            FormChonHang chonHang = new FormChonHang();
-
-            if (chonHang.ShowDialog() == DialogResult.OK)
-            {
-                List<HangChonDTO> dsHang = chonHang.dsHangChon;
-
-                var dto = new PhieuXuatDTO
-                {
-                    MaPhieuXuat = Convert.ToInt32(txtmaPX.Text),
-                    SoPhieu = txtsophieu.Text,
-                    NguoiLap = txtuser.Text,
-                    GhiChu = txtnote.Text,
-                    TrangThai = txttt.Text == "Lỗi" ? 1 : 2,
-                    NgayTao = DateTime.Now
-                };
-
-                bll.Insert(dto);
-                LoadPhieuXuat();
-                TinhTongTien();
-
-                FormCTPhieuXuat f = new FormCTPhieuXuat(dsHang);
-                f.Show();
-            }
-        }
-
-        private void dgvPhieuXuat_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-
-            DataGridViewRow row = dgvPhieuXuat.Rows[e.RowIndex];
-
-            txtmaPX.Text = row.Cells["maphieuxuat"].Value.ToString();
-            txtsophieu.Text = row.Cells["sophieu"].Value.ToString();
-            txtuser.Text = row.Cells["nguoilap"].Value.ToString();
-            txtnote.Text = row.Cells["ghichu"].Value.ToString();
-            int trangThai = Convert.ToInt32(row.Cells["trangthai"].Value);
-
-            if (trangThai == 1)
-                txttt.Text = "Lỗi";
-            else if (trangThai == 2)
-                txttt.Text = "Hoàn thành";
-            else
-                txttt.Text = "";
-        }
-
-        private void btnxoa_Click(object sender, EventArgs e)
-        {
-            if (!int.TryParse(txtmaPX.Text, out int maPX))
-            {
-                MessageBox.Show("Chọn phiếu hợp lệ!");
-                return;
-            }
-
-            if (MessageBox.Show("Xóa phiếu?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                bll.Delete(maPX);
-                MessageBox.Show("Đã xóa!");
-                LoadPhieuXuat();
-            }
-        }
-
-        private void btnreload_Click(object sender, EventArgs e)
-        {
-            LoadPhieuXuat();
         }
 
         private void dgvPhieuXuat_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            int colIndex = dgvPhieuXuat.Columns["btnxem"].Index;
+            int maID = Convert.ToInt32(dgvPhieuXuat.Rows[e.RowIndex].Cells["maphieuxuat"].Value);
 
-            if (e.ColumnIndex != colIndex) return;
+            if (dgvPhieuXuat.Columns[e.ColumnIndex].Name == "btnxem")
+            {
+                FormXuatCommon f = new FormXuatCommon(this.loginUser, maID, "VIEW");
+                f.ShowDialog();
+                LoadPhieuXuat();
+                TinhTongTien();
+            }
+            else if (dgvPhieuXuat.Columns[e.ColumnIndex].Name == "btnsua")
+            {
+                FormXuatCommon f = new FormXuatCommon(this.loginUser, maID, "EDIT");
 
-            int maPX = Convert.ToInt32(dgvPhieuXuat.Rows[e.RowIndex].Cells["maphieuxuat"].Value);
+                f.ShowDialog();
 
-            CTPhieuXuatBLL bllCT = new CTPhieuXuatBLL();
+                LoadPhieuXuat();
+                TinhTongTien();
+            }
+        }
 
-            DataTable dt = bllCT.GetChiTietByMaPX(maPX);
-
-            FormCTPhieuXuat f = new FormCTPhieuXuat(dt);
+        private void btntaophieu_Click(object sender, EventArgs e)
+        {
+            FormXuatCommon f = new FormXuatCommon(this.loginUser);
             f.ShowDialog();
+            LoadPhieuXuat();
+            TinhTongTien();
+        }
+
+        private void btnreload_Click(object sender, EventArgs e)
+        {
+            LoadPhieuXuat();
+            TinhTongTien();
+        }
+
+        private void dgvPhieuXuat_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgvPhieuXuat.Rows[e.RowIndex];
+                if (txtmaPX != null) txtmaPX.Text = row.Cells["maphieuxuat"].Value.ToString();
+                if (txtsophieu != null) txtsophieu.Text = row.Cells["sophieu"].Value.ToString();
+                if (txtuser != null) txtuser.Text = row.Cells["nguoilap"].Value.ToString();
+            }
+        }
+
+        private void btnxoa_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtmaPX.Text))
+            {
+                MessageBox.Show("Vui lòng chọn một phiếu xuất để xóa!");
+                return;
+            }
+
+            if (MessageBox.Show("Xóa phiếu này sẽ xóa toàn bộ chi tiết liên quan. Bạn chắc chắn chứ?", "Cảnh báo",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                int maID = int.Parse(txtmaPX.Text);
+                bll.Delete(maID);
+                LoadPhieuXuat();
+                TinhTongTien();
+                MessageBox.Show("Đã xóa phiếu xuất thành công!");
+                txtmaPX.Clear();
+                txtsophieu.Clear();
+                txtuser.Clear();
+            }
         }
     }
 }

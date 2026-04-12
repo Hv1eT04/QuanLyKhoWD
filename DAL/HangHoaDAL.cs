@@ -16,6 +16,13 @@ namespace DAL
             string sql = "SELECT * FROM HangHoa";
             return db.ExecuteQuery(sql);
         }
+
+        public DataTable GetAllHangHoaCommon()
+        {
+            string sql = "SELECT mahang, tenhang FROM HangHoa";
+            return db.ExecuteQuery(sql);
+        }
+
         public int ThemHangHoa(DTO.HangHoaDTO hh)
         {
             string sql = @"INSERT INTO HangHoa (MaCode, TenHang, MaDanhMuc, DonViTinh, DonGiaBan, TonKhoHienTai, MucCanhBao, TrangThai) 

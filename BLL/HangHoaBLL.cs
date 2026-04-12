@@ -54,6 +54,9 @@ namespace BLL
             }
             return "Còn Hàng";
         }
-       
+       public DataTable GetHangHoaCommon()
+        {
+            return dal.GetAllHangHoaCommon();
+        }
     }
 }

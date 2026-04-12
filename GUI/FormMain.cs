@@ -12,14 +12,20 @@ namespace GUI
 {
     public partial class FormMain : Form
     {
-        public FormMain()
+        private DTO.NguoiDungDTO loginUser;
+        public FormMain(DTO.NguoiDungDTO user)
         {
             InitializeComponent();
+            this.loginUser = user;
         }
-
         private void FormMain_Load(object sender, EventArgs e)
         {
             LoadHomeImage();
+            if (!loginUser.Vaitro.Equals("manager", StringComparison.OrdinalIgnoreCase))
+            {
+                btnBaocao.Visible = false;
+                btnBaocao.Enabled = false;
+            }
             lblHome.ForeColor = Color.FromArgb(51, 51, 51);
             lblHome.MouseEnter += (s, ev) =>
             {
@@ -35,18 +41,14 @@ namespace GUI
         //Hàm mở Form con trong panelNoiDung
         private Form currentFormChild;
         private void OpenChildForm(Form childForm)
-        { 
-            if (currentFormChild != null)
-                currentFormChild.Close();
+        {
+            if (currentFormChild != null) currentFormChild.Close();
             currentFormChild = childForm;
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
-
-            panelNoiDung.Controls.Clear();//Xóa ảnh hoặc form cũ
+            panelNoiDung.Controls.Clear();
             panelNoiDung.Controls.Add(childForm);
-
-            childForm.BringToFront();
             childForm.Show();
         }
 
@@ -95,6 +97,7 @@ namespace GUI
         private void btnBaocao_Click(object sender, EventArgs e)
         {
             OpenChildForm(new FormBaoCao());
+        }
         private void btnphieunhap_Click(object sender, EventArgs e)
         {
             OpenChildForm(new FormPhieuNhap());
@@ -102,7 +105,7 @@ namespace GUI
 
         private void btnphieuxuat_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new FormPhieuXuat());
+            OpenChildForm(new FormPhieuXuat(loginUser));
         }
     }
 }

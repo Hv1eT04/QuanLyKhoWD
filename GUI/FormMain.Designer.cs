@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.panelMenu = new System.Windows.Forms.Panel();
+            this.btnBaocao = new System.Windows.Forms.Button();
+            this.btnphieuxuat = new System.Windows.Forms.Button();
+            this.btnphieunhap = new System.Windows.Forms.Button();
             this.btnNCC = new System.Windows.Forms.Button();
             this.lblHome = new System.Windows.Forms.Label();
             this.picHome = new System.Windows.Forms.PictureBox();
@@ -36,9 +39,6 @@
             this.btnHangHoa = new System.Windows.Forms.Button();
             this.panelNoiDung = new System.Windows.Forms.Panel();
             this.picBia = new System.Windows.Forms.PictureBox();
-            this.btnBaocao = new System.Windows.Forms.Button();
-            this.btnphieunhap = new System.Windows.Forms.Button();
-            this.btnphieuxuat = new System.Windows.Forms.Button();
             this.panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picHome)).BeginInit();
             this.panelNoiDung.SuspendLayout();
@@ -62,13 +62,41 @@
             this.panelMenu.Size = new System.Drawing.Size(242, 654);
             this.panelMenu.TabIndex = 0;
             // 
+            // btnBaocao
+            // 
+            this.btnBaocao.Location = new System.Drawing.Point(-5, 455);
+            this.btnBaocao.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnBaocao.Name = "btnBaocao";
+            this.btnBaocao.Size = new System.Drawing.Size(244, 64);
+            this.btnBaocao.TabIndex = 5;
+            this.btnBaocao.Text = "Báo cáo";
+            this.btnBaocao.UseVisualStyleBackColor = true;
+            this.btnBaocao.Click += new System.EventHandler(this.btnBaocao_Click);
+            // 
+            // btnphieuxuat
+            // 
+            this.btnphieuxuat.Location = new System.Drawing.Point(12, 374);
+            this.btnphieuxuat.Name = "btnphieuxuat";
+            this.btnphieuxuat.Size = new System.Drawing.Size(217, 51);
+            this.btnphieuxuat.TabIndex = 6;
+            this.btnphieuxuat.Text = "Phiếu xuất";
+            this.btnphieuxuat.UseVisualStyleBackColor = true;
+            this.btnphieuxuat.Click += new System.EventHandler(this.btnphieuxuat_Click);
+            // 
+            // btnphieunhap
+            // 
+            this.btnphieunhap.Location = new System.Drawing.Point(19, 306);
+            this.btnphieunhap.Name = "btnphieunhap";
+            this.btnphieunhap.Size = new System.Drawing.Size(217, 51);
+            this.btnphieunhap.TabIndex = 5;
+            this.btnphieunhap.Text = "Phiếu nhập";
+            this.btnphieunhap.UseVisualStyleBackColor = true;
+            this.btnphieunhap.Click += new System.EventHandler(this.btnphieunhap_Click);
+            // 
             // btnNCC
             // 
-            this.btnNCC.Location = new System.Drawing.Point(0, 241);
+            this.btnNCC.Location = new System.Drawing.Point(12, 248);
             this.btnNCC.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnNCC.Name = "btnNCC";
-            this.btnNCC.Size = new System.Drawing.Size(244, 64);
-            this.btnNCC.Location = new System.Drawing.Point(0, 193);
             this.btnNCC.Name = "btnNCC";
             this.btnNCC.Size = new System.Drawing.Size(217, 51);
             this.btnNCC.TabIndex = 4;
@@ -90,11 +118,8 @@
             // picHome
             // 
             this.picHome.Image = global::GUI.Properties.Resources.icon_Home;
-            this.picHome.Location = new System.Drawing.Point(3, 15);
-            this.picHome.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.picHome.Name = "picHome";
-            this.picHome.Size = new System.Drawing.Size(56, 62);
             this.picHome.Location = new System.Drawing.Point(3, 12);
+            this.picHome.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.picHome.Name = "picHome";
             this.picHome.Size = new System.Drawing.Size(50, 50);
             this.picHome.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -145,36 +170,6 @@
             this.picBia.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBia.TabIndex = 0;
             this.picBia.TabStop = false;
-            // 
-            // btnBaocao
-            // 
-            this.btnBaocao.Location = new System.Drawing.Point(0, 313);
-            this.btnBaocao.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnBaocao.Name = "btnBaocao";
-            this.btnBaocao.Size = new System.Drawing.Size(244, 64);
-            this.btnBaocao.TabIndex = 5;
-            this.btnBaocao.Text = "Báo cáo";
-            this.btnBaocao.UseVisualStyleBackColor = true;
-            this.btnBaocao.Click += new System.EventHandler(this.btnBaocao_Click);
-            // btnphieunhap
-            // 
-            this.btnphieunhap.Location = new System.Drawing.Point(-2, 250);
-            this.btnphieunhap.Name = "btnphieunhap";
-            this.btnphieunhap.Size = new System.Drawing.Size(217, 51);
-            this.btnphieunhap.TabIndex = 5;
-            this.btnphieunhap.Text = "Phiếu nhập";
-            this.btnphieunhap.UseVisualStyleBackColor = true;
-            this.btnphieunhap.Click += new System.EventHandler(this.btnphieunhap_Click);
-            // 
-            // btnphieuxuat
-            // 
-            this.btnphieuxuat.Location = new System.Drawing.Point(-2, 307);
-            this.btnphieuxuat.Name = "btnphieuxuat";
-            this.btnphieuxuat.Size = new System.Drawing.Size(217, 51);
-            this.btnphieuxuat.TabIndex = 6;
-            this.btnphieuxuat.Text = "Phiếu xuất";
-            this.btnphieuxuat.UseVisualStyleBackColor = true;
-            this.btnphieuxuat.Click += new System.EventHandler(this.btnphieuxuat_Click);
             // 
             // FormMain
             // 

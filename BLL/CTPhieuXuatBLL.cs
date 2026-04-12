@@ -13,10 +13,7 @@ namespace BLL
     {
         CTPhieuXuatDAL dal = new CTPhieuXuatDAL();
 
-        public DataTable GetChiTietByMaPX(int maPX)
-        {
-            return dal.GetByMaPX(maPX);
-        }
+        
 
         public void UpdateCT(int maCT, int mahang, int sl, double dg)
         {
@@ -27,9 +24,9 @@ namespace BLL
         {
             return dal.TinhTongTien(maPX);
         }
-        public void Insert(int maPX, int mahang, int sl, double dg)
+        public DataTable GetChiTietByMaPX(int maPX)
         {
-            dal.Insert(maPX, mahang, sl, dg);
+            return dal.GetListByMaPX(maPX);
         }
     }
 }
