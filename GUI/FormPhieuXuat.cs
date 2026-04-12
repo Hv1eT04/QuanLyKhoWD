@@ -97,14 +97,6 @@ namespace GUI
             }
         }
 
-        private void btntaophieu_Click(object sender, EventArgs e)
-        {
-            FormXuatCommon f = new FormXuatCommon(this.loginUser);
-            f.ShowDialog();
-            LoadPhieuXuat();
-            TinhTongTien();
-        }
-
         private void btnreload_Click(object sender, EventArgs e)
         {
             LoadPhieuXuat();
@@ -120,6 +112,13 @@ namespace GUI
                 if (txtsophieu != null) txtsophieu.Text = row.Cells["sophieu"].Value.ToString();
                 if (txtuser != null) txtuser.Text = row.Cells["nguoilap"].Value.ToString();
             }
+        }
+        private void btntaophieu_Click(object sender, EventArgs e)
+        {
+            FormXuatCommon f = new FormXuatCommon(this.loginUser);
+            f.ShowDialog();
+            LoadPhieuXuat();
+            TinhTongTien();
         }
 
         private void btnxoa_Click(object sender, EventArgs e)
