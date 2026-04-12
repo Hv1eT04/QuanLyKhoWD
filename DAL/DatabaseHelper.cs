@@ -14,6 +14,19 @@ namespace DAL
         /// Used for SELECT statements. 
         /// Works for both no-parameter and parameterized queries thanks to 'params'.
         /// </summary>
+        // SELECT không tham số
+        public DataTable ExecuteQuery(string sql)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
+        // SELECT có tham số
         public DataTable ExecuteQuery(string sql, params MySqlParameter[] parameters)
         {
             DataTable dt = new DataTable();
@@ -39,6 +52,7 @@ namespace DAL
         /// Used for INSERT, UPDATE, DELETE.
         /// Returns the number of rows affected.
         /// </summary>
+        // INSERT, UPDATE, DELETE
         public int ExecuteNonQuery(string sql, params MySqlParameter[] parameters)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -50,6 +64,13 @@ namespace DAL
                     {
                         cmd.Parameters.AddRange(parameters);
                     }
+                conn.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    if (parameters != null)
+                        cmd.Parameters.AddRange(parameters);
+
                     return cmd.ExecuteNonQuery();
                 }
             }
@@ -58,6 +79,7 @@ namespace DAL
         /// <summary>
         /// Used for aggregate functions like COUNT(*), MAX(), or fetching a single ID.
         /// </summary>
+        // Lấy 1 giá trị (COUNT, MAX,...)
         public object ExecuteScalar(string sql, params MySqlParameter[] parameters)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))

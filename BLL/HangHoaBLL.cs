@@ -28,6 +28,12 @@ namespace BLL
         }
         public int ThemHangHoa(HangHoaDTO hh)
         {
+            string loi = KiemTraDuLieu(hh);
+            if (loi != "")
+                throw new Exception(loi);
+
+            CapNhatTrangThai(hh); // 🔥 tự động trạng thái
+
             return dal.ThemHangHoa(hh);
         }
         public int SuaHangHoa(HangHoaDTO hh)
@@ -46,17 +52,34 @@ namespace BLL
         {
             return dal.GetAllHangHoaDangBan();
         }
-        public string KiemTraCanhBao(int tonKHo, int mucCanhBao)
+        public bool KiemTraCanhBao(HangHoaDTO hh)
         {
-            if (tonKHo <= mucCanhBao)
-            {
-                return "Cảnh báo: Hàng sắp hết!";
-            }
-            return "Còn Hàng";
+            return hh.TonKhoHienTai <= hh.MucCanhBao;
         }
        public DataTable GetHangHoaCommon()
         {
             return dal.GetAllHangHoaCommon();
         }
+        public string KiemTraDuLieu(HangHoaDTO hh)
+        {
+            if (string.IsNullOrWhiteSpace(hh.TenHang))
+                return "Tên hàng không được để trống";
+
+            if (hh.DonGiaBan <= 0)
+                return "Đơn giá phải lớn hơn 0";
+
+            if (hh.TonKhoHienTai < 0)
+                return "Số lượng không hợp lệ";
+
+            return ""; // hợp lệ
+        }
+        public void CapNhatTrangThai(HangHoaDTO hh)
+        {
+            if (hh.TonKhoHienTai == 0)
+                hh.TrangThai = 0; // hết hàng
+            else
+                hh.TrangThai = 1; // còn hàng
+        }
+
     }
 }
