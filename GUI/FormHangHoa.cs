@@ -23,7 +23,24 @@ namespace GUI
             InitializeComponent();
         }
 
+        void StyleButton(Button btn, Color backColor)
+        {
+            btn.BackColor = backColor;
+            btn.ForeColor = Color.White;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            btn.Cursor = Cursors.Hand;
+        }
+        void StyleTextBox(TextBox txt)
+        {
+            txt.BorderStyle = BorderStyle.FixedSingle;
+            txt.Font = new Font("Segoe UI", 10);
+            txt.BackColor = Color.White;
+            txt.ForeColor = Color.Black;
 
+            txt.Height = 30;
+        }
         private void DGVHangHoa_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -61,7 +78,6 @@ namespace GUI
                     LoadHangHoa();
                     MessageBox.Show("Đã ngừng kinh doanh!");
                 }
-                BackColor = Color.Crimson;
                 return;
             }
             if (DGVHangHoa.Columns[e.ColumnIndex].Name == "btnKhoiPhuc")
@@ -87,9 +103,21 @@ namespace GUI
 
         private void FormHangHoa_Load(object sender, EventArgs e)
         {
+            StyleButton(btnThem, Color.FromArgb(40, 167, 69));
+            StyleButton(btnMoi, Color.FromArgb(0, 123, 255));
+
+            //Style TextBox
+            StyleTextBox(txtMaCode);
+            StyleTextBox(txtTenHang);
+            StyleTextBox(txtSoLuong);
+            StyleTextBox(txtDonGia);
+            StyleTextBox(txtDonVi);
+            StyleTextBox(txtTimKiem);
+
             LoadHangHoa();
             LoadDanhMuc();
             LoadTrangThai();
+            StyleDataGridView();
             ResetForm();
         }
         void LoadHangHoa()
@@ -138,9 +166,27 @@ namespace GUI
                 }
 
             }
+            foreach (DataGridViewRow row in DGVHangHoa.Rows)
+            {
+                if (row.Cells["tonkhohientai"].Value == null) continue;
+                int tonkho = Convert.ToInt32(row.Cells["tonkhohientai"].Value);
+                int mucCanhBao = 5;
+                if (tonkho <= mucCanhBao)
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightPink;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+            DGVHangHoa.Columns["mahang"].HeaderText = "Mã hàng";
+            DGVHangHoa.Columns["macode"].HeaderText = "Mã code";
+            DGVHangHoa.Columns["tenhang"].HeaderText = "Tên hàng";
+            DGVHangHoa.Columns["madanhmuc"].HeaderText = "Danh mục";
+            DGVHangHoa.Columns["donvitinh"].HeaderText = "Đơn vị";
+            DGVHangHoa.Columns["dongiaban"].HeaderText = "Đơn giá";
+            DGVHangHoa.Columns["tonkhohientai"].HeaderText = "Tồn kho";
+            DGVHangHoa.Columns["TenTrangThai"].HeaderText = "Trạng thái";
         }
 
-        
         void LoadDanhMuc()
         {
             CbbDanhMuc.DataSource = danhmucBUS.GetAllDanhMuc();
@@ -159,8 +205,8 @@ namespace GUI
         {
             var list = new List<object>
             {
-                new { Value = 0, Text = "Còn hàng" },
-                new { Value = 1, Text = "Hết hàng" }
+                new { Value = 1, Text = "Còn hàng" },
+                new { Value = 0, Text = "Hết hàng" }
             };
             cbbTrangThai.DataSource = list;
             cbbTrangThai.DisplayMember = "Text";
@@ -169,22 +215,39 @@ namespace GUI
         }
         private void btnThem_Click(object sender, EventArgs e)
         {
-            HangHoaDTO hh = new HangHoaDTO();
-
-            hh.MaCode = txtMaCode.Text;
-            hh.TenHang = txtTenHang.Text;
-            hh.DonViTinh = txtDonVi.Text;
-            hh.DonGiaBan = double.Parse(txtDonGia.Text);
-            hh.MaDanhMuc = Convert.ToInt32(CbbDanhMuc.SelectedValue);
-            hh.TrangThai = Convert.ToInt32(cbbTrangThai.SelectedValue);
-            hh.TonKhoHienTai = int.Parse(txtSoLuong.Text);
-            hh.MucCanhBao = 0;
-            bus.ThemHangHoa(hh);
-            LoadHangHoa();
-            MessageBox.Show("Thêm hàng hóa thành công!");
-            if(hh.TonKhoHienTai <= hh.MucCanhBao)
+            try
             {
-                MessageBox.Show("Cảnh báo: Hàng sắp hết!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                HangHoaDTO hh = new HangHoaDTO();
+
+                hh.MaCode = txtMaCode.Text;
+                hh.TenHang = txtTenHang.Text;
+                hh.DonViTinh = txtDonVi.Text;
+                hh.DonGiaBan = double.Parse(txtDonGia.Text);
+                hh.MaDanhMuc = Convert.ToInt32(CbbDanhMuc.SelectedValue);
+                hh.TrangThai = Convert.ToInt32(cbbTrangThai.SelectedValue);
+                hh.TonKhoHienTai = int.Parse(txtSoLuong.Text);
+                hh.MucCanhBao = 5; 
+
+                //GỌI BLL (validate + thêm)
+                bus.ThemHangHoa(hh);
+
+                //CẢNH BÁO
+                if (bus.KiemTraCanhBao(hh))
+                {
+                    MessageBox.Show("Cảnh báo: Hàng sắp hết!",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+
+                LoadHangHoa();
+                ResetForm();
+
+                MessageBox.Show("Thêm hàng hóa thành công!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -193,6 +256,7 @@ namespace GUI
             LoadHangHoa();
             LoadDanhMuc();
             LoadTrangThai();
+            ResetForm();
         }
 
         private void chkHienNgung_CheckedChanged(object sender, EventArgs e)
@@ -221,5 +285,33 @@ namespace GUI
             txtTimKiem.Text = "";
             txtTimKiem.ForeColor = Color.Black;
         }
+        //Style DGV 
+        void StyleDataGridView()
+        {
+            DGVHangHoa.BorderStyle = BorderStyle.None;
+            DGVHangHoa.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+
+            DGVHangHoa.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            DGVHangHoa.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 120, 215);
+            DGVHangHoa.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            DGVHangHoa.BackgroundColor = Color.White;
+            DGVHangHoa.EnableHeadersVisualStyles = false;
+
+            // Header
+            DGVHangHoa.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            DGVHangHoa.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 144, 255);
+            DGVHangHoa.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            DGVHangHoa.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            // Font
+            DGVHangHoa.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+
+            // Auto size
+            DGVHangHoa.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            DGVHangHoa.RowTemplate.Height = 35;
+        }
+        
     }
 }
