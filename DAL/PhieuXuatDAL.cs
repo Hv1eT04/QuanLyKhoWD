@@ -18,26 +18,39 @@ namespace DAL
         }
         public void Delete(int maPX)
         {
-            string sql = "DELETE FROM PhieuXuat WHERE MaPhieuXuat = @MaPX";
+            string sqlDetail = "DELETE FROM chitietphieuxuat WHERE maphieuxuat = @MaPX";
+            db.ExecuteNonQuery(sqlDetail, new MySqlParameter("@MaPX", maPX));
 
-            db.ExecuteNonQuery(sql,
-                new MySqlParameter("@MaPX", maPX)
-            );
+            string sqlMaster = "DELETE FROM phieuxuat WHERE maphieuxuat = @MaPX";
+            db.ExecuteNonQuery(sqlMaster, new MySqlParameter("@MaPX", maPX));
         }
-        public void Insert(PhieuXuatDTO dto)
+        public int GetUserIdByName(string hoTen)
         {
-            string sql = @"INSERT INTO PhieuXuat
-    (MaPhieuXuat, SoPhieu, NguoiLap, NgayTao, GhiChu, TrangThai)
-    VALUES (@MaPX, @SoPhieu, @NguoiLap, @NgayTao, @GhiChu, @TrangThai)";
+            string sql = "SELECT manguoidung FROM NguoiDung WHERE hoten = @hovaten LIMIT 1";
+            MySqlParameter[] sqlParams = { new MySqlParameter("@hovaten", hoTen) };
+            object result = db.ExecuteScalar(sql, sqlParams);
+            return result != null ? Convert.ToInt32(result) : -1;
+        }
 
-            db.ExecuteNonQuery(sql,
-                new MySqlParameter("@MaPX", dto.MaPhieuXuat),
-                new MySqlParameter("@SoPhieu", dto.SoPhieu),
-                new MySqlParameter("@NguoiLap", dto.NguoiLap),
-                new MySqlParameter("@NgayTao", dto.NgayTao),
-                new MySqlParameter("@GhiChu", dto.GhiChu),
-                new MySqlParameter("@TrangThai", dto.TrangThai)
-            );
+        public int InsertAndGetId(PhieuXuatDTO dto)
+        {
+            int idNguoiLap = GetUserIdByName(dto.TenNguoiXuat);
+            if (idNguoiLap == -1) return -1;
+
+            string sql = @"INSERT INTO PhieuXuat (SoPhieu, nguoilap, ngaytao, ghichu, trangthai) 
+                   VALUES (@SoPhieu, @nguoilap, @ngaytao, @ghichu, @trangthai);
+                   SELECT LAST_INSERT_ID();";
+
+            MySqlParameter[] sqlParams = {
+                new MySqlParameter("@sophieu", dto.SoPhieu),
+                new MySqlParameter("@nguoilap", idNguoiLap),
+                new MySqlParameter("@ngaytao", DateTime.Now),
+                new MySqlParameter("@ghichu", dto.GhiChu),
+                new MySqlParameter("@trangthai", "hoanthanh")
+            };
+
+            object result = db.ExecuteScalar(sql, sqlParams);
+            return result != null ? Convert.ToInt32(result) : -1;
         }
         public int GetMaxMaPhieuXuat()
         {
@@ -49,6 +62,21 @@ namespace DAL
         {
             string sql = "SELECT SUM(soluong * dongiaxuat) FROM chitietphieuxuat";
             return db.ExecuteScalar(sql);
+        }
+        public DataTable GetById(int maPX)
+        {
+            string sql = "SELECT * FROM PhieuXuat WHERE MaPhieuXuat = @MaPX";
+            return db.ExecuteQuery(sql, new MySqlParameter("@MaPX", maPX));
+        }
+
+        public bool Update(int maPX, string ghiChu)
+        {
+            string sql = "UPDATE PhieuXuat SET ghichu = @ghichu WHERE MaPhieuXuat = @MaPX";
+            MySqlParameter[] sqlParams = {
+        new MySqlParameter("@ghichu", ghiChu),
+        new MySqlParameter("@MaPX", maPX)
+    };
+            return db.ExecuteNonQuery(sql, sqlParams) > 0;
         }
     }
 }

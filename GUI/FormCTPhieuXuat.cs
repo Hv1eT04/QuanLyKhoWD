@@ -52,16 +52,9 @@ namespace GUI
 
             MessageBox.Show("Sửa thành công!");
 
-            LoadLai();
         }
 
-        void LoadLai()
-        {
-            if (int.TryParse(txtMaPX.Text, out int maPX))
-            {
-                dgvChiTiet.DataSource = bll.GetChiTietByMaPX(maPX);
-            }
-        }
+        
 
         private void dgvChiTiet_CellClick(object sender, DataGridViewCellEventArgs e)
         {

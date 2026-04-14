@@ -44,25 +44,34 @@ namespace DAL
 
             return Convert.ToDouble(dt.Rows[0][0]);
         }
-        public DataTable GetByMaPX(int maPX)
+        public bool Insert(CTPhieuXuatDTO dto, int maPX)
         {
-            string sql = "SELECT * FROM chitietphieuxuat WHERE maphieuxuat=@ma";
+            string sql = @"INSERT INTO ChiTietPhieuXuat (Maphieuxuat, mahang, soluong, dongiaxuat) 
+                   VALUES (@Maphieuxuat, @mahang, @soluong, @dongiaxuat)";
 
-            return db.ExecuteQuery(sql,
-                new MySqlParameter("@ma", maPX));
+            MySqlParameter[] sqlParams = {
+                new MySqlParameter("@Maphieuxuat", maPX),
+                new MySqlParameter("@mahang", dto.MaHang),
+                new MySqlParameter("@soluong", dto.SoLuong),
+                new MySqlParameter("@dongiaxuat", dto.GiaXuat)
+            };
+
+            return db.ExecuteNonQuery(sql, sqlParams) > 0;
         }
-        public void Insert(int maPX, int mahang, int sl, double dg)
+        public void DeleteByMaPX(int maPX)
         {
-            string sql = @"INSERT INTO chitietphieuxuat
-                   (maphieuxuat, mahang, soluong, dongiaxuat)
-                   VALUES (@px, @mh, @sl, @dg)";
+            string sql = "DELETE FROM chitietphieuxuat WHERE maphieuxuat = @ma";
+            db.ExecuteNonQuery(sql, new MySqlParameter("@ma", maPX));
+        }
 
-            db.ExecuteNonQuery(sql,
-                new MySqlParameter("@px", maPX),
-                new MySqlParameter("@mh", mahang),
-                new MySqlParameter("@sl", sl),
-                new MySqlParameter("@dg", dg)
-            );
+        public DataTable GetListByMaPX(int maPX)
+        {
+            string sql = @"SELECT ct.*, h.tenhang 
+                   FROM chitietphieuxuat ct 
+                   INNER JOIN HangHoa h ON ct.mahang = h.mahang 
+                   WHERE ct.maphieuxuat = @ma";
+
+            return db.ExecuteQuery(sql, new MySqlParameter("@ma", maPX));
         }
     }
 }

@@ -70,9 +70,10 @@
             // 
             // txtTimKiem
             // 
-            this.txtTimKiem.Location = new System.Drawing.Point(827, 228);
+            this.txtTimKiem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTimKiem.Location = new System.Drawing.Point(847, 229);
             this.txtTimKiem.Name = "txtTimKiem";
-            this.txtTimKiem.Size = new System.Drawing.Size(240, 22);
+            this.txtTimKiem.Size = new System.Drawing.Size(353, 22);
             this.txtTimKiem.TabIndex = 20;
             this.txtTimKiem.Text = "Tìm kiếm ....";
             this.txtTimKiem.TextChanged += new System.EventHandler(this.txtTimKiem_TextChanged);
@@ -115,15 +116,17 @@
             this.btnThem.TabIndex = 34;
             this.btnThem.Text = "+ Thêm";
             this.btnThem.UseVisualStyleBackColor = false;
+            this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
             // 
             // btnMoi
             // 
-            this.btnMoi.Location = new System.Drawing.Point(935, 119);
+            this.btnMoi.Location = new System.Drawing.Point(924, 115);
             this.btnMoi.Name = "btnMoi";
-            this.btnMoi.Size = new System.Drawing.Size(80, 40);
+            this.btnMoi.Size = new System.Drawing.Size(100, 40);
             this.btnMoi.TabIndex = 33;
             this.btnMoi.Text = "Làm mới";
             this.btnMoi.UseVisualStyleBackColor = true;
+            this.btnMoi.Click += new System.EventHandler(this.btnMoi_Click);
             // 
             // cbbTrangThai
             // 
@@ -264,6 +267,7 @@
             this.DGVHangHoa.RowTemplate.Height = 24;
             this.DGVHangHoa.Size = new System.Drawing.Size(1203, 357);
             this.DGVHangHoa.TabIndex = 2;
+            this.DGVHangHoa.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVHangHoa_CellContentClick);
             // 
             // btnSua
             // 
