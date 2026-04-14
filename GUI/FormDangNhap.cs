@@ -8,7 +8,7 @@ namespace GUI
     public partial class FormDangNhap : Form
     {
         NguoiDungBLL bll = new NguoiDungBLL();
-
+        public static NguoiDungDTO currentUser;
         public FormDangNhap()
         {
             InitializeComponent();
@@ -25,7 +25,9 @@ namespace GUI
 
                 if (result != null)
                 {
-                    MessageBox.Show("Đăng nhập thành công! Chào " + result.hovaten);
+                    currentUser = result;
+
+                    MessageBox.Show("Đăng nhập thành công! Chào " + result.hoten);
 
                     this.DialogResult = DialogResult.OK;
                     this.Close();

@@ -24,7 +24,7 @@ namespace GUI
         }
         void LoadChiTiet()
         {
-            dgvCTPN.DataSource = bll.GetChiTiet(maPhieuNhap);
+            dgvCTPN.DataSource = bll.GetByMaPN(maPhieuNhap);
         }
         private void FormCTPhieuNhap_Load_1(object sender, EventArgs e)
         {

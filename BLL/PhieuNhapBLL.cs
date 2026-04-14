@@ -26,13 +26,41 @@ namespace BLL
         {
             return dal.GetMaxMaPhieuNhap() + 1;
         }
-        public void Delete(string maPN)
+        public bool Delete(int maPN)
         {
-            dal.Delete(maPN);
+            return dal.Delete(maPN) > 0;
         }
-        public void Update(PhieuNhapDTO dto)
+        public bool InsertFull(PhieuNhapDTO dto)
         {
-            dal.Update(dto);
+            return dal.Insert(dto) > 0;
+        }
+
+        public bool UpdateFull(PhieuNhapDTO dto)
+        {
+            return dal.Update(dto) > 0;
+        }
+
+        public PhieuNhapDTO GetById(int maPN)
+        {
+            return dal.GetById(maPN);
+        }
+        public int InsertAndGetId(PhieuNhapDTO dto)
+        {
+            return dal.InsertAndGetId(dto);
+        }
+        public string TaoSoPhieu()
+        {
+            PhieuNhapDAL dal = new PhieuNhapDAL();
+
+            string max = dal.GetMaxSoPhieu();
+
+            if (string.IsNullOrEmpty(max))
+                return "PN001";
+
+            int num = int.Parse(max.Replace("PN", ""));
+            num++;
+
+            return "PN" + num.ToString("000");
         }
     }
 }

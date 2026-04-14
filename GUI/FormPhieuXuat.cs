@@ -40,29 +40,10 @@ namespace GUI
 
         private void btntaophieu_Click(object sender, EventArgs e)
         {
-            FormChonHang chonHang = new FormChonHang();
+            FormTao f = new FormTao(FormMode.Tao);
+            f.ShowDialog();
 
-            if (chonHang.ShowDialog() == DialogResult.OK)
-            {
-                List<HangChonDTO> dsHang = chonHang.dsHangChon;
-
-                var dto = new PhieuXuatDTO
-                {
-                    MaPhieuXuat = Convert.ToInt32(txtmaPX.Text),
-                    SoPhieu = txtsophieu.Text,
-                    NguoiLap = txtuser.Text,
-                    GhiChu = txtnote.Text,
-                    TrangThai = txttt.Text == "Lỗi" ? 1 : 2,
-                    NgayTao = DateTime.Now
-                };
-
-                bll.Insert(dto);
-                LoadPhieuXuat();
-                TinhTongTien();
-
-                FormCTPhieuXuat f = new FormCTPhieuXuat(dsHang);
-                f.Show();
-            }
+            LoadPhieuXuat();
         }
 
         private void dgvPhieuXuat_CellClick(object sender, DataGridViewCellEventArgs e)

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL
+namespace GUI
 {
-    internal class HangChonBLL
+    public enum FormMode
     {
+        Tao,
+        Sua
     }
 }

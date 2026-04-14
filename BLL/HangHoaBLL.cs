@@ -54,6 +54,16 @@ namespace BLL
             }
             return "Còn Hàng";
         }
-       
+        public void CongTonKho(int maHang, int soLuong)
+        {
+            HangHoaDAL dal = new HangHoaDAL();
+            dal.CongTonKho(maHang, soLuong);
+        }
+
+        public void TruTonKho(int maHang, int soLuong)
+        {
+            HangHoaDAL dal = new HangHoaDAL();
+            dal.TruTonKho(maHang, soLuong);
+        }
     }
 }

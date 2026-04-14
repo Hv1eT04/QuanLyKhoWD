@@ -20,6 +20,8 @@
             this.dgvPhieuNhap = new System.Windows.Forms.DataGridView();
             this.btnxem = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btnsua = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btntaophieu = new System.Windows.Forms.Button();
+            this.btnxoa = new System.Windows.Forms.Button();
             this.lbPN = new System.Windows.Forms.Label();
             this.txtmaPN = new System.Windows.Forms.TextBox();
             this.lbSoPhieu = new System.Windows.Forms.Label();
@@ -27,11 +29,8 @@
             this.lbuser = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtnote = new System.Windows.Forms.TextBox();
-            this.btnthem = new System.Windows.Forms.Button();
-            this.btnxoa = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.boxtt = new System.Windows.Forms.ComboBox();
-            this.btnreload = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.cbbncc = new System.Windows.Forms.ComboBox();
             this.txtuser = new System.Windows.Forms.TextBox();
@@ -44,12 +43,11 @@
             this.dgvPhieuNhap.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.btnxem,
             this.btnsua});
-            this.dgvPhieuNhap.Location = new System.Drawing.Point(0, 243);
+            this.dgvPhieuNhap.Location = new System.Drawing.Point(1, 232);
             this.dgvPhieuNhap.Name = "dgvPhieuNhap";
-            this.dgvPhieuNhap.ReadOnly = false;
             this.dgvPhieuNhap.RowHeadersWidth = 51;
             this.dgvPhieuNhap.RowTemplate.Height = 24;
-            this.dgvPhieuNhap.Size = new System.Drawing.Size(1174, 301);
+            this.dgvPhieuNhap.Size = new System.Drawing.Size(1175, 279);
             this.dgvPhieuNhap.TabIndex = 0;
             this.dgvPhieuNhap.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPhieuNhap_CellClick);
             // 
@@ -72,6 +70,26 @@
             this.btnsua.Text = "Sửa";
             this.btnsua.UseColumnTextForButtonValue = true;
             this.btnsua.Width = 125;
+            // 
+            // btntaophieu
+            // 
+            this.btntaophieu.Location = new System.Drawing.Point(936, 33);
+            this.btntaophieu.Name = "btntaophieu";
+            this.btntaophieu.Size = new System.Drawing.Size(108, 40);
+            this.btntaophieu.TabIndex = 10;
+            this.btntaophieu.Text = "Tạo Phiếu";
+            this.btntaophieu.UseVisualStyleBackColor = true;
+            this.btntaophieu.Click += new System.EventHandler(this.btntaophieu_Click);
+            // 
+            // btnxoa
+            // 
+            this.btnxoa.Location = new System.Drawing.Point(936, 96);
+            this.btnxoa.Name = "btnxoa";
+            this.btnxoa.Size = new System.Drawing.Size(108, 40);
+            this.btnxoa.TabIndex = 11;
+            this.btnxoa.Text = "Xóa";
+            this.btnxoa.UseVisualStyleBackColor = true;
+            this.btnxoa.Click += new System.EventHandler(this.btnxoa_Click);
             // 
             // lbPN
             // 
@@ -130,28 +148,8 @@
             this.txtnote.Location = new System.Drawing.Point(546, 33);
             this.txtnote.Multiline = true;
             this.txtnote.Name = "txtnote";
-            this.txtnote.Size = new System.Drawing.Size(270, 151);
+            this.txtnote.Size = new System.Drawing.Size(270, 191);
             this.txtnote.TabIndex = 9;
-            // 
-            // btnthem
-            // 
-            this.btnthem.Location = new System.Drawing.Point(936, 33);
-            this.btnthem.Name = "btnthem";
-            this.btnthem.Size = new System.Drawing.Size(108, 40);
-            this.btnthem.TabIndex = 10;
-            this.btnthem.Text = "Thêm";
-            this.btnthem.UseVisualStyleBackColor = true;
-            this.btnthem.Click += new System.EventHandler(this.btnthem_Click);
-            // 
-            // btnxoa
-            // 
-            this.btnxoa.Location = new System.Drawing.Point(936, 96);
-            this.btnxoa.Name = "btnxoa";
-            this.btnxoa.Size = new System.Drawing.Size(108, 40);
-            this.btnxoa.TabIndex = 11;
-            this.btnxoa.Text = "Xóa";
-            this.btnxoa.UseVisualStyleBackColor = true;
-            this.btnxoa.Click += new System.EventHandler(this.btnxoa_Click);
             // 
             // label1
             // 
@@ -169,16 +167,6 @@
             this.boxtt.Name = "boxtt";
             this.boxtt.Size = new System.Drawing.Size(121, 24);
             this.boxtt.TabIndex = 13;
-            // 
-            // btnreload
-            // 
-            this.btnreload.Location = new System.Drawing.Point(936, 147);
-            this.btnreload.Name = "btnreload";
-            this.btnreload.Size = new System.Drawing.Size(108, 40);
-            this.btnreload.TabIndex = 14;
-            this.btnreload.Text = "Làm mới";
-            this.btnreload.UseVisualStyleBackColor = true;
-            this.btnreload.Click += new System.EventHandler(this.btnreload_Click);
             // 
             // label3
             // 
@@ -208,15 +196,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1176, 545);
+            this.ClientSize = new System.Drawing.Size(1177, 514);
             this.Controls.Add(this.txtuser);
             this.Controls.Add(this.cbbncc);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.btnreload);
             this.Controls.Add(this.boxtt);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnxoa);
-            this.Controls.Add(this.btnthem);
+            this.Controls.Add(this.btntaophieu);
             this.Controls.Add(this.txtnote);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lbuser);
@@ -237,6 +224,10 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dgvPhieuNhap;
+        private System.Windows.Forms.Button btntaophieu;
+        private System.Windows.Forms.Button btnxoa;
+        private System.Windows.Forms.DataGridViewButtonColumn btnxem;
+        private System.Windows.Forms.DataGridViewButtonColumn btnsua;
         private System.Windows.Forms.Label lbPN;
         private System.Windows.Forms.TextBox txtmaPN;
         private System.Windows.Forms.Label lbSoPhieu;
@@ -244,15 +235,10 @@
         private System.Windows.Forms.Label lbuser;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtnote;
-        private System.Windows.Forms.Button btnthem;
-        private System.Windows.Forms.Button btnxoa;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox boxtt;
-        private System.Windows.Forms.Button btnreload;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cbbncc;
-        private System.Windows.Forms.DataGridViewButtonColumn btnxem;
-        private System.Windows.Forms.DataGridViewButtonColumn btnsua;
         private System.Windows.Forms.TextBox txtuser;
     }
 }

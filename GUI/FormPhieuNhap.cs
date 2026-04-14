@@ -2,6 +2,7 @@
 using DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 
 
@@ -20,14 +21,6 @@ namespace GUI
             LoadTrangThai();
             LoadNCC();
             LoadPhieuNhap();
-            SetAutoMaPhieu();
-
-            PhieuNhapBLL bll = new PhieuNhapBLL();
-            int nextId = bll.GetNextMaPhieuNhap();
-
-            txtmaPN.Text = nextId.ToString();
-            txtsophieu.Text = "PN" + nextId.ToString("D3");
-
         }
 
         void LoadPhieuNhap()
@@ -50,43 +43,6 @@ namespace GUI
 
             boxtt.SelectedIndex = 0;
         }
-        void CapNhatPhieuNhap()
-        {
-            if (maPN_DangChon == 0)
-            {
-                MessageBox.Show("Chọn phiếu cần sửa!");
-                return;
-            }
-
-            PhieuNhapDTO dto = new PhieuNhapDTO
-            {
-                MaPhieuNhap = maPN_DangChon,
-                SoPhieu = txtsophieu.Text,
-                NguoiLap = txtuser.Text,
-                GhiChu = txtnote.Text,
-                TrangThai = Convert.ToInt32(boxtt.SelectedValue),
-                MaNCC = Convert.ToInt32(cbbncc.SelectedValue),
-                NgayTao = DateTime.Now
-            };
-
-            PhieuNhapBLL bll = new PhieuNhapBLL();
-            bll.Update(dto);
-
-            MessageBox.Show("Cập nhật thành công!");
-
-            LoadPhieuNhap();
-        }
-
-        void SetAutoMaPhieu()
-        {
-            PhieuNhapBLL bll = new PhieuNhapBLL();
-            int nextId = bll.GetNextMaPhieuNhap();
-
-            txtmaPN.Text = nextId.ToString();
-            txtsophieu.Text = "PN" + nextId.ToString("D3");
-            txtnote.Clear();
-            boxtt.SelectedIndex = 0;
-        }
 
         void LoadNCC()
         {
@@ -98,22 +54,11 @@ namespace GUI
 
             cbbncc.SelectedIndex = -1;
         }
-        private void btnthem_Click(object sender, EventArgs e)
+        private void btntaophieu_Click(object sender, EventArgs e)
         {
-            PhieuNhapDTO dto = new PhieuNhapDTO
-            {
-                MaPhieuNhap = Convert.ToInt32(txtmaPN.Text),
-                SoPhieu = txtsophieu.Text,
-                NguoiLap = txtuser.Text,
-                GhiChu = txtnote.Text,
-                TrangThai = Convert.ToInt32(boxtt.SelectedValue),
-                MaNCC = Convert.ToInt32(cbbncc.SelectedValue),
-                NgayTao = DateTime.Now
-            };
+            FormTao f = new FormTao(FormMode.Tao, 0);
+            f.ShowDialog();
 
-            PhieuNhapBLL bll = new PhieuNhapBLL();
-            bll.Insert(dto);
-            MessageBox.Show("Thêm thành công!");
             LoadPhieuNhap();
         }
 
@@ -133,17 +78,17 @@ namespace GUI
             if (result == DialogResult.Yes)
             {
                 PhieuNhapBLL bll = new PhieuNhapBLL();
-                bll.Delete(txtmaPN.Text);
 
-                MessageBox.Show("Xóa thành công!");
-                LoadPhieuNhap();
+                if (bll.Delete(maPN_DangChon))
+                {
+                    MessageBox.Show("Xóa thành công!");
+                    LoadPhieuNhap();
+                }
+                else
+                {
+                    MessageBox.Show("Xóa thất bại!");
+                }
             }
-        }
-
-        private void btnreload_Click(object sender, EventArgs e)
-        {
-            LoadPhieuNhap();
-            SetAutoMaPhieu();
         }
 
         private void dgvPhieuNhap_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -153,17 +98,22 @@ namespace GUI
             string colName = dgvPhieuNhap.Columns[e.ColumnIndex].Name;
             DataGridViewRow row = dgvPhieuNhap.Rows[e.RowIndex];
 
-            maPN_DangChon = Convert.ToInt32(row.Cells["maphieunhap"].Value);
+            var data = (DataRowView)row.DataBoundItem;
+            maPN_DangChon = Convert.ToInt32(data["MaPhieuNhap"]);
 
             if (colName == "btnxem")
             {
                 FormCTPhieuNhap f = new FormCTPhieuNhap(maPN_DangChon);
                 f.ShowDialog();
+                return;
             }
 
             if (colName == "btnsua")
             {
-                CapNhatPhieuNhap();
+                FormTao f = new FormTao(FormMode.Sua, maPN_DangChon);
+                f.ShowDialog();
+
+                LoadPhieuNhap();
                 return;
             }
 

@@ -8,9 +8,9 @@ namespace DTO
 {
     public class NguoiDungDTO
     {
+        public int manguoidung { get; set; }
         public string tendangnhap { get; set; }
-        public string matkhau { get; set; }
-        public string hovaten {  get; set; }
+        public string hoten { get; set; }
         public string Vaitro { get; set; }
 
     }

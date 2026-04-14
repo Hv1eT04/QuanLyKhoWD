@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DTO;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
-using System.Data;
-using DTO;
 namespace DAL
 {
     public class HangHoaDAL
@@ -87,6 +88,30 @@ namespace DAL
             };
 
             return db.ExecuteQuery(sql, parameters);
+        }
+        public void CongTonKho(int maHang, int soLuong)
+        {
+            string sql = "UPDATE HangHoa SET TonKhoHienTai = TonKhoHienTai + @sl WHERE MaHang = @ma";
+
+            MySqlParameter[] p =
+            {
+        new MySqlParameter("@sl", soLuong),
+        new MySqlParameter("@ma", maHang)
+    };
+
+            db.ExecuteNonQuery(sql, p);
+        }
+        public void TruTonKho(int maHang, int soLuong)
+        {
+            string sql = "UPDATE HangHoa SET TonKhoHienTai = TonKhoHienTai - @sl WHERE MaHang = @ma";
+
+            MySqlParameter[] p =
+            {
+        new MySqlParameter("@sl", soLuong),
+        new MySqlParameter("@ma", maHang)
+    };
+
+            db.ExecuteNonQuery(sql, p);
         }
     }
 }

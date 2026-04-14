@@ -6,7 +6,7 @@ namespace DAL
 {
     public class DatabaseHelper
     {
-        private string connectionString = "Server=localhost;Port=3306;Database=quanlykhodb;Uid=root;Pwd=12345;Charset=utf8;";
+        private string connectionString = "Server=localhost;Port=3306;Database=quanlykhodb;Uid=root;Pwd=12346;Charset=utf8;";
 
         // SELECT không tham số
         public DataTable ExecuteQuery(string sql)

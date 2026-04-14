@@ -30,7 +30,7 @@ namespace GUI
 
         private void dgvNCC_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return; //Bỏ qua nếu click vào header hoặc ngoài vùng dữ liệu
+            if (e.RowIndex < 0) return;
             var row = dgvNCC.Rows[e.RowIndex];
             int ma = Convert.ToInt32(row.Cells["MaNCC"].Value);
             if (dgvNCC.Columns[e.ColumnIndex].Name == "btnSua")

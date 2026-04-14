@@ -26,8 +26,9 @@ namespace DAL
                 DataRow row = dt.Rows[0];
                 return new NguoiDungDTO
                 {
+                    manguoidung = Convert.ToInt32(row["manguoidung"]),
                     tendangnhap = row["tendangnhap"].ToString(),
-                    hovaten = row["hoten"].ToString(),
+                    hoten = row["hoten"].ToString(),
                     Vaitro = row["Vaitro"].ToString()
                 };
             }

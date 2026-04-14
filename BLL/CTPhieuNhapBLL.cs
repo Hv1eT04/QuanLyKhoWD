@@ -13,9 +13,20 @@ namespace BLL
     {
         CTPhieuNhapDAL dal = new CTPhieuNhapDAL();
 
-        public DataTable GetChiTiet(int maPN)
+        public DataTable GetByMaPN(int maPN)
         {
             return dal.GetByMaPN(maPN);
         }
+
+        public void Insert(CTPhieuNhapDTO ct)
+        {
+            dal.Insert(ct);
+        }
+
+        public void Delete(int maCT)
+        {
+            dal.Delete(maCT);
+        }
     }
+    
 }

@@ -15,7 +15,7 @@ namespace DTO
     {
         public int MaPhieuNhap { get; set; }
         public string SoPhieu { get; set; }
-        public string NguoiLap { get; set; }
+        public int NguoiLap { get; set; }
         public int MaNCC { get; set; }
         public int TrangThai { get; set; }
         public DateTime NgayTao { get; set; }
