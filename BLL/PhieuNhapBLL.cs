@@ -76,7 +76,7 @@ namespace BLL
                 if (updateMaster)
                 {
                     // 2. Xóa các chi tiết cũ của phiếu này để tránh trùng lặp hoặc rác dữ liệu
-                    dalCT.DeleteByMaPN(maPN);
+                    dalCT.DeleteAndReduceStock(maPN);
 
                     // 3. Chèn lại danh sách chi tiết mới sau khi chỉnh sửa
                     foreach (var ct in dsChiTiet)
@@ -101,7 +101,7 @@ namespace BLL
             try
             {
                 // Xóa chi tiết trước để tránh vi phạm ràng buộc khóa ngoại (Foreign Key)
-                dalCT.DeleteByMaPN(maPN);
+                dalCT.DeleteAndReduceStock(maPN);
 
                 // Sau đó mới xóa phiếu chính
                 return dal.Delete(maPN);

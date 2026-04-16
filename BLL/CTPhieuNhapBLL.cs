@@ -23,7 +23,7 @@ namespace BLL
 
         public void DeleteByMaPN(int maPN)
         {
-            dal.DeleteByMaPN(maPN);
+            dal.DeleteAndReduceStock(maPN);
         }
 
         public double TinhTongTien(int maPN)
@@ -35,7 +35,7 @@ namespace BLL
         {
             if (sl > 0 && dg >= 0)
             {
-                dal.Update(maCT, mahang, sl, dg);
+                dal.UpdateWithStock(maCT, mahang, sl, dg);
             }
         }
     }

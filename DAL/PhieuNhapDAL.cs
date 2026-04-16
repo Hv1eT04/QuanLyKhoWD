@@ -22,22 +22,15 @@ namespace DAL
         {
             try
             {
-                // 1. Xóa chi tiết trước để tránh vi phạm ràng buộc khóa ngoại
-                string sqlDetail = "DELETE FROM chitietphieunhap WHERE maphieunhap = @MaPN";
-                db.ExecuteNonQuery(sqlDetail, new MySqlParameter("@MaPN", maPN));
+                // 1. Gọi CTPhieuNhapDAL để trừ lại số lượng trong kho
+                CTPhieuNhapDAL ctDal = new CTPhieuNhapDAL();
+                ctDal.DeleteAndReduceStock(maPN);
 
-                // 2. Xóa phiếu nhập chính
+                // 2. Xóa phiếu chính
                 string sqlMaster = "DELETE FROM phieunhap WHERE maphieunhap = @MaPN";
-                int rowsAffected = db.ExecuteNonQuery(sqlMaster, new MySqlParameter("@MaPN", maPN));
-
-                // Nếu số dòng bị ảnh hưởng > 0 tức là đã xóa thành công
-                return rowsAffected > 0;
+                return db.ExecuteNonQuery(sqlMaster, new MySqlParameter("@MaPN", maPN)) > 0;
             }
-            catch (Exception ex)
-            {
-                // Có thể ghi log lỗi ex ở đây
-                return false;
-            }
+            catch { return false; }
         }
 
         // 3. Lấy ID người dùng từ tên (Dùng để map NguoiLap)
@@ -52,10 +45,6 @@ namespace DAL
         // 4. Thêm phiếu nhập và lấy ID vừa tạo (Có thêm MaNCC)
         public int InsertAndGetId(PhieuNhapDTO dto)
         {
-            // Nếu dùng tên để lấy ID người lập (giống logic phiếu xuất bạn đưa)
-            // int idNguoiLap = GetUserIdByName(dto.TenNguoiNhap); 
-            // Hoặc dùng trực tiếp dto.NguoiLap nếu đã có ID
-
             string sql = @"INSERT INTO PhieuNhap (SoPhieu, nguoilap, mancc, ngaytao, ghichu, trangthai) 
                            VALUES (@SoPhieu, @nguoilap, @mancc, @ngaytao, @ghichu, @trangthai);
                            SELECT LAST_INSERT_ID();";
@@ -63,7 +52,7 @@ namespace DAL
             MySqlParameter[] sqlParams = {
                 new MySqlParameter("@SoPhieu", dto.SoPhieu),
                 new MySqlParameter("@nguoilap", dto.NguoiLap),
-                new MySqlParameter("@mancc", dto.MaNCC), // Thêm MaNCC ở đây
+                new MySqlParameter("@mancc", dto.MaNCC),
                 new MySqlParameter("@ngaytao", DateTime.Now),
                 new MySqlParameter("@ghichu", dto.GhiChu),
                 new MySqlParameter("@trangthai", dto.TrangThai)
@@ -98,19 +87,14 @@ namespace DAL
         // 8. Cập nhật ghi chú và nhà cung cấp cho phiếu nhập
         public bool Update(PhieuNhapDTO dto)
         {
-            string sql = @"UPDATE PhieuNhap 
-                           SET ghichu = @ghichu, 
-                               mancc = @mancc,
-                               trangthai = @trangthai 
+            string sql = @"UPDATE PhieuNhap SET ghichu = @ghichu, mancc = @mancc, trangthai = @trangthai 
                            WHERE MaPhieuNhap = @MaPN";
-
             MySqlParameter[] sqlParams = {
                 new MySqlParameter("@ghichu", dto.GhiChu),
                 new MySqlParameter("@mancc", dto.MaNCC),
                 new MySqlParameter("@trangthai", dto.TrangThai),
                 new MySqlParameter("@MaPN", dto.MaPhieuNhap)
             };
-
             return db.ExecuteNonQuery(sql, sqlParams) > 0;
         }
 
