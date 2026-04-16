@@ -198,7 +198,7 @@ namespace GUI
         {
             if (danhSachChiTiet.Count == 0) return;
 
-            string hoTen = (UserResult != null) ? UserResult.hovaten : "Admin";
+            string hoTen = (UserResult != null) ? UserResult.hoten : "Admin";
             bool success = false;
 
             if (currentMode == "ADD")

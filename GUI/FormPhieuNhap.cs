@@ -1,132 +1,125 @@
 ﻿using BLL;
 using DTO;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
-
+using System.Runtime.InteropServices;
 
 namespace GUI
 {
     public partial class FormPhieuNhap : Form
     {
-        int maPN_DangChon = 0;
-        public FormPhieuNhap()
+        PhieuNhapBLL bll = new PhieuNhapBLL();
+        private NguoiDungDTO loginUser;
+
+        // WinAPI để xử lý Placeholder cho .NET Framework
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
+        private const int EM_SETCUEBANNER = 0x1501;
+
+        public FormPhieuNhap(NguoiDungDTO user)
         {
             InitializeComponent();
-        }
+            this.loginUser = user ?? new NguoiDungDTO();
 
-        private void FormPhieuNhap_Load(object sender, EventArgs e)
-        {
-            LoadTrangThai();
-            LoadNCC();
-            LoadPhieuNhap();
-        }
-
-        void LoadPhieuNhap()
-        {
-            PhieuNhapBLL bll = new PhieuNhapBLL();
-            dgvPhieuNhap.DataSource = bll.GetAllPhieuNhap();
-        }
-
-        void LoadTrangThai()
-        {
-            var list = new List<TrangThai>
-            {
-                new TrangThai { Value = 0, Text = "Hoàn thành" },
-                new TrangThai { Value = 1, Text = "Lỗi" }
+            // Đảm bảo chạy sau khi form đã dựng xong
+            this.Load += (s, e) => {
+                SetPlaceholders();
+                SetupGrid();
+                RefreshData();
             };
-
-            boxtt.DataSource = list;
-            boxtt.DisplayMember = "Text";
-            boxtt.ValueMember = "Value";
-
-            boxtt.SelectedIndex = 0;
         }
 
-        void LoadNCC()
+        private void SetPlaceholders()
         {
-            NhaCCBLL bllNCC = new NhaCCBLL();
-
-            cbbncc.DataSource = bllNCC.GetALL();
-            cbbncc.DisplayMember = "TenNCC";
-            cbbncc.ValueMember = "MaNCC";
-
-            cbbncc.SelectedIndex = -1;
-        }
-        private void btntaophieu_Click(object sender, EventArgs e)
-        {
-            FormTao f = new FormTao(FormMode.Tao, 0);
-            f.ShowDialog();
-
-            LoadPhieuNhap();
+            SendMessage(txtsophieu.Handle, EM_SETCUEBANNER, 0, "Số phiếu...");
+            SendMessage(txtuser.Handle, EM_SETCUEBANNER, 0, "Người lập...");
+            SendMessage(txtNCC.Handle, EM_SETCUEBANNER, 0, "Nhà cung cấp...");
         }
 
-        private void btnxoa_Click(object sender, EventArgs e)
+        private void SetupGrid()
         {
-            if (string.IsNullOrEmpty(txtmaPN.Text))
+            if (dgvPhieuNhap == null) return;
+            dgvPhieuNhap.AutoGenerateColumns = false;
+            dgvPhieuNhap.Columns.Clear();
+
+            dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "maphieunhap", HeaderText = "ID", Name = "maphieunhap", Visible = false });
+            dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "sophieu", HeaderText = "Số Phiếu", Name = "sophieu", Width = 100 });
+            dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "tenncc", HeaderText = "Nhà Cung Cấp", Name = "tenncc", Width = 150 });
+            dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "nguoilap", HeaderText = "Người Nhập", Name = "nguoilap", Width = 120 });
+            dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ngaytao", HeaderText = "Ngày Tạo", Name = "ngaytao", Width = 120 });
+
+            // Nút chức năng
+            DataGridViewButtonColumn btnXem = new DataGridViewButtonColumn { HeaderText = "Xem", Text = "Xem", Name = "btnxem", UseColumnTextForButtonValue = true, Width = 60 };
+            dgvPhieuNhap.Columns.Add(btnXem);
+
+            DataGridViewButtonColumn btnSua = new DataGridViewButtonColumn { HeaderText = "Sửa", Text = "Sửa", Name = "btnsua", UseColumnTextForButtonValue = true, Width = 60 };
+            dgvPhieuNhap.Columns.Add(btnSua);
+        }
+
+        private void RefreshData()
+        {
+            try
             {
-                MessageBox.Show("Chọn phiếu cần xóa!");
-                return;
+                DataTable dt = bll.GetAllPhieuNhap();
+                dgvPhieuNhap.DataSource = dt;
+
+                decimal tong = bll.GetTongTien();
+                txtTongTien.Text = tong.ToString("N0") + " VND";
             }
-
-            DialogResult result = MessageBox.Show(
-                "Bạn có chắc muốn xóa?",
-                "Xác nhận",
-                MessageBoxButtons.YesNo);
-
-            if (result == DialogResult.Yes)
-            {
-                PhieuNhapBLL bll = new PhieuNhapBLL();
-
-                if (bll.Delete(maPN_DangChon))
-                {
-                    MessageBox.Show("Xóa thành công!");
-                    LoadPhieuNhap();
-                }
-                else
-                {
-                    MessageBox.Show("Xóa thất bại!");
-                }
-            }
+            catch { }
         }
 
         private void dgvPhieuNhap_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgvPhieuNhap.Rows[e.RowIndex];
+                txtmaPN.Text = row.Cells["maphieunhap"].Value?.ToString();
+                txtsophieu.Text = row.Cells["sophieu"].Value?.ToString();
+                txtuser.Text = row.Cells["nguoilap"].Value?.ToString();
+                txtNCC.Text = row.Cells["tenncc"].Value?.ToString();
+            }
+        }
+
+        private void dgvPhieuNhap_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
             if (e.RowIndex < 0) return;
-
             string colName = dgvPhieuNhap.Columns[e.ColumnIndex].Name;
-            DataGridViewRow row = dgvPhieuNhap.Rows[e.RowIndex];
-
-            var data = (DataRowView)row.DataBoundItem;
-            maPN_DangChon = Convert.ToInt32(data["MaPhieuNhap"]);
+            int maID = Convert.ToInt32(dgvPhieuNhap.Rows[e.RowIndex].Cells["maphieunhap"].Value);
 
             if (colName == "btnxem")
             {
-                FormCTPhieuNhap f = new FormCTPhieuNhap(maPN_DangChon);
+                FormNhapCommon f = new FormNhapCommon(this.loginUser, maID, "VIEW");
                 f.ShowDialog();
-                return;
+                RefreshData();
             }
-
-            if (colName == "btnsua")
+            else if (colName == "btnsua")
             {
-                FormTao f = new FormTao(FormMode.Sua, maPN_DangChon);
+                FormNhapCommon f = new FormNhapCommon(this.loginUser, maID, "EDIT");
                 f.ShowDialog();
-
-                LoadPhieuNhap();
-                return;
+                RefreshData();
             }
-
-            txtmaPN.Text = maPN_DangChon.ToString();
-            txtsophieu.Text = row.Cells["sophieu"].Value?.ToString();
-            txtnote.Text = row.Cells["ghichu"].Value?.ToString();
-            txtuser.Text = row.Cells["nguoilap"].Value?.ToString();
-
-            if (row.Cells["mancc"].Value != null)
-                cbbncc.SelectedValue = row.Cells["mancc"].Value;
-
-            if (row.Cells["trangthai"].Value != null)
-                boxtt.SelectedValue = row.Cells["trangthai"].Value;
         }
+
+        private void btntaophieu_Click(object sender, EventArgs e)
+        {
+            FormNhapCommon f = new FormNhapCommon(this.loginUser);
+            f.ShowDialog();
+            RefreshData();
+        }
+
+        private void btnxoa_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtmaPN.Text)) return;
+            if (MessageBox.Show("Xóa phiếu này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                bll.Delete(int.Parse(txtmaPN.Text));
+                RefreshData();
+                txtmaPN.Clear(); txtsophieu.Clear(); txtuser.Clear(); txtNCC.Clear();
+            }
+        }
+
+        private void btnreload_Click(object sender, EventArgs e) => RefreshData();
     }
 }

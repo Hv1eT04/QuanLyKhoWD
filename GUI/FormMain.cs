@@ -100,7 +100,7 @@ namespace GUI
         }
         private void btnphieunhap_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new FormPhieuNhap());
+            OpenChildForm(new FormPhieuNhap(loginUser));
         }
 
         private void btnphieuxuat_Click(object sender, EventArgs e)

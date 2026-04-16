@@ -3,116 +3,123 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+
 namespace DAL
 {
     public class PhieuNhapDAL
     {
         DatabaseHelper db = new DatabaseHelper();
 
+        // 1. Lấy tất cả danh sách phiếu nhập
         public DataTable GetAll()
         {
-            string sql = "SELECT * FROM PhieuNhap";
+            string sql = @"SELECT * FROM PhieuNhap";
             return db.ExecuteQuery(sql);
         }
-        public int Insert(PhieuNhapDTO dto)
-        {
-            string sql = @"INSERT INTO PhieuNhap
-                   (SoPhieu, NguoiLap, MaNCC, TrangThai, NgayTao, GhiChu)
-                   VALUES
-                   (@sp, @nl, @ncc, @tt, @ngay, @gc)";
 
-            return db.ExecuteNonQuery(sql,
-                new MySqlParameter("@sp", dto.SoPhieu),
-                new MySqlParameter("@nl", dto.NguoiLap),
-                new MySqlParameter("@ncc", dto.MaNCC),
-                new MySqlParameter("@tt", dto.TrangThai),
-                new MySqlParameter("@ngay", DateTime.Now),
-                new MySqlParameter("@gc", dto.GhiChu)
-            );
+        // 2. Xóa phiếu nhập (Xóa chi tiết trước, xóa phiếu sau)
+        public bool Delete(int maPN)
+        {
+            try
+            {
+                // 1. Xóa chi tiết trước để tránh vi phạm ràng buộc khóa ngoại
+                string sqlDetail = "DELETE FROM chitietphieunhap WHERE maphieunhap = @MaPN";
+                db.ExecuteNonQuery(sqlDetail, new MySqlParameter("@MaPN", maPN));
+
+                // 2. Xóa phiếu nhập chính
+                string sqlMaster = "DELETE FROM phieunhap WHERE maphieunhap = @MaPN";
+                int rowsAffected = db.ExecuteNonQuery(sqlMaster, new MySqlParameter("@MaPN", maPN));
+
+                // Nếu số dòng bị ảnh hưởng > 0 tức là đã xóa thành công
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                // Có thể ghi log lỗi ex ở đây
+                return false;
+            }
         }
 
-        public int Delete(int maPN)
+        // 3. Lấy ID người dùng từ tên (Dùng để map NguoiLap)
+        public int GetUserIdByName(string hoTen)
         {
-            string sql1 = "DELETE FROM chitietphieunhap WHERE maphieunhap=@ma";
-            db.ExecuteNonQuery(sql1,
-                new MySqlParameter("@ma", maPN)
-            );
-
-            string sql2 = "DELETE FROM PhieuNhap WHERE MaPhieuNhap=@ma";
-            return db.ExecuteNonQuery(sql2,
-                new MySqlParameter("@ma", maPN)
-            );
+            string sql = "SELECT manguoidung FROM NguoiDung WHERE hoten = @hovaten LIMIT 1";
+            MySqlParameter[] sqlParams = { new MySqlParameter("@hovaten", hoTen) };
+            object result = db.ExecuteScalar(sql, sqlParams);
+            return result != null ? Convert.ToInt32(result) : -1;
         }
+
+        // 4. Thêm phiếu nhập và lấy ID vừa tạo (Có thêm MaNCC)
+        public int InsertAndGetId(PhieuNhapDTO dto)
+        {
+            // Nếu dùng tên để lấy ID người lập (giống logic phiếu xuất bạn đưa)
+            // int idNguoiLap = GetUserIdByName(dto.TenNguoiNhap); 
+            // Hoặc dùng trực tiếp dto.NguoiLap nếu đã có ID
+
+            string sql = @"INSERT INTO PhieuNhap (SoPhieu, nguoilap, mancc, ngaytao, ghichu, trangthai) 
+                           VALUES (@SoPhieu, @nguoilap, @mancc, @ngaytao, @ghichu, @trangthai);
+                           SELECT LAST_INSERT_ID();";
+
+            MySqlParameter[] sqlParams = {
+                new MySqlParameter("@SoPhieu", dto.SoPhieu),
+                new MySqlParameter("@nguoilap", dto.NguoiLap),
+                new MySqlParameter("@mancc", dto.MaNCC), // Thêm MaNCC ở đây
+                new MySqlParameter("@ngaytao", DateTime.Now),
+                new MySqlParameter("@ghichu", dto.GhiChu),
+                new MySqlParameter("@trangthai", dto.TrangThai)
+            };
+
+            object result = db.ExecuteScalar(sql, sqlParams);
+            return result != null ? Convert.ToInt32(result) : -1;
+        }
+
+        // 5. Lấy mã ID lớn nhất hiện tại
         public int GetMaxMaPhieuNhap()
         {
             string sql = "SELECT IFNULL(MAX(MaPhieuNhap),0) FROM PhieuNhap";
             DataTable dt = db.ExecuteQuery(sql);
             return Convert.ToInt32(dt.Rows[0][0]);
         }
-        public int Update(PhieuNhapDTO dto)
+
+        // 6. Tính tổng tiền nhập hàng
+        public object GetTongTien()
+        {
+            string sql = "SELECT SUM(soluong * dongianhap) FROM chitietphieunhap";
+            return db.ExecuteScalar(sql);
+        }
+
+        // 7. Lấy thông tin phiếu nhập theo ID
+        public DataTable GetById(int maPN)
+        {
+            string sql = "SELECT * FROM PhieuNhap WHERE MaPhieuNhap = @MaPN";
+            return db.ExecuteQuery(sql, new MySqlParameter("@MaPN", maPN));
+        }
+
+        // 8. Cập nhật ghi chú và nhà cung cấp cho phiếu nhập
+        public bool Update(PhieuNhapDTO dto)
         {
             string sql = @"UPDATE PhieuNhap 
-                   SET sophieu = @sophieu,
-                       ghichu = @ghichu,
-                       trangthai = @trangthai,
-                        mancc = @mancc
-                   WHERE maphieunhap = @mapn";
+                           SET ghichu = @ghichu, 
+                               mancc = @mancc,
+                               trangthai = @trangthai 
+                           WHERE MaPhieuNhap = @MaPN";
 
-                return db.ExecuteNonQuery(sql,
-                new MySqlParameter("@sophieu", dto.SoPhieu),
+            MySqlParameter[] sqlParams = {
                 new MySqlParameter("@ghichu", dto.GhiChu),
-                new MySqlParameter("@trangthai", dto.TrangThai),
                 new MySqlParameter("@mancc", dto.MaNCC),
-                new MySqlParameter("@mapn", dto.MaPhieuNhap)
-            );
-        }
-        public PhieuNhapDTO GetById(int maPN)
-        {
-            string sql = "SELECT * FROM PhieuNhap WHERE MaPhieuNhap = @ma";
-
-            DataTable dt = db.ExecuteQuery(sql,
-                new MySqlParameter("@ma", maPN)
-            );
-
-            if (dt.Rows.Count == 0)
-                return null;
-
-            DataRow row = dt.Rows[0];
-
-            return new PhieuNhapDTO
-            {
-                MaPhieuNhap = Convert.ToInt32(row["MaPhieuNhap"]),
-                SoPhieu = row["SoPhieu"].ToString(),
-                NguoiLap = Convert.ToInt32(row["NguoiLap"]),
-                MaNCC = Convert.ToInt32(row["MaNCC"]),
-                TrangThai = Convert.ToInt32(row["TrangThai"]),
-                NgayTao = Convert.ToDateTime(row["NgayTao"]),
-                GhiChu = row["GhiChu"].ToString()
+                new MySqlParameter("@trangthai", dto.TrangThai),
+                new MySqlParameter("@MaPN", dto.MaPhieuNhap)
             };
-        }
-        public int InsertAndGetId(PhieuNhapDTO pn)
-        {
-            string sql = @"
-        INSERT INTO PhieuNhap(SoPhieu, GhiChu, MaNCC, TrangThai, NgayTao, NguoiLap)
-        VALUES (@sp, @gc, @ncc, @tt, @ngay, @nl);
-        SELECT LAST_INSERT_ID();";
 
-            DataTable dt = db.ExecuteQuery(sql,
-                new MySqlParameter("@sp", pn.SoPhieu),
-                new MySqlParameter("@gc", pn.GhiChu),
-                new MySqlParameter("@ncc", pn.MaNCC),
-                new MySqlParameter("@tt", pn.TrangThai),
-                new MySqlParameter("@ngay", DateTime.Now),
-                new MySqlParameter("@nl", pn.NguoiLap)
-            );
-
-            return Convert.ToInt32(dt.Rows[0][0]);
+            return db.ExecuteNonQuery(sql, sqlParams) > 0;
         }
+
+        // 9. Lấy số phiếu lớn nhất (để tự sinh số phiếu tiếp theo)
         public string GetMaxSoPhieu()
         {
             string sql = "SELECT MAX(SoPhieu) FROM PhieuNhap";
-            return db.ExecuteScalar(sql)?.ToString();
+            object result = db.ExecuteScalar(sql);
+            return result?.ToString();
         }
     }
 }

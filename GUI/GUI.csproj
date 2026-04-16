@@ -141,12 +141,6 @@
     <Compile Include="FormDangNhap.Designer.cs">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTao.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormTao.Designer.cs">
-      <DependentUpon>FormTao.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormCTPhieuNhap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +183,12 @@
     <Compile Include="FormNCC.Designer.cs">
       <DependentUpon>FormNCC.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormNhapCommon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNhapCommon.Designer.cs">
+      <DependentUpon>FormNhapCommon.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPhieuNhap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,9 +228,6 @@
     <EmbeddedResource Include="FormDangNhap.resx">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTao.resx">
-      <DependentUpon>FormTao.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormCTPhieuNhap.resx">
       <DependentUpon>FormCTPhieuNhap.cs</DependentUpon>
     </EmbeddedResource>
@@ -251,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormNCC.resx">
       <DependentUpon>FormNCC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormNhapCommon.resx">
+      <DependentUpon>FormNhapCommon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPhieuNhap.resx">
       <DependentUpon>FormPhieuNhap.cs</DependentUpon>

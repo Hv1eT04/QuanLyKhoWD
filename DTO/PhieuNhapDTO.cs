@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-    public class TrangThai
-    {
-        public int Value { get; set; }
-        public string Text { get; set; }
-    }
     public class PhieuNhapDTO
     {
         public int MaPhieuNhap { get; set; }

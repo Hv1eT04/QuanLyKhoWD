@@ -8,10 +8,11 @@ namespace DTO
 {
     public class CTPhieuNhapDTO
     {
-        public int machitiet { get; set; }
-        public int maphieunhap { get; set; }
-        public int mahang { get; set; }
-        public int soluong { get; set; }
-        public double dongianhap { get; set; }
+        public int MaPhieuXuat { get; set; }
+        public string MaHang { get; set; }
+        public string TenHang { get; set; }
+        public int SoLuong { get; set; }
+        public decimal GiaNhap { get; set; }
+        public decimal ThanhTien => SoLuong * GiaNhap;
     }
 }
