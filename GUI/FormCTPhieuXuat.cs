@@ -46,7 +46,7 @@ namespace GUI
             int maCT = Convert.ToInt32(txtMaCT.Text);
             int mahang = Convert.ToInt32(txtMaHang.Text);
             int sl = Convert.ToInt32(txtSoLuong.Text);
-            double dg = Convert.ToDouble(txtDonGia.Text);
+            decimal dg = Convert.ToDecimal(txtDonGia.Text);
 
             bll.UpdateCT(maCT, mahang, sl, dg);
 

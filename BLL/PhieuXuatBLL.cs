@@ -83,7 +83,7 @@ namespace BLL
             if (updateMaster)
             {
                 CTPhieuXuatDAL ctDal = new CTPhieuXuatDAL();
-                ctDal.DeleteByMaPX(maPX);
+                ctDal.DeleteAndRestoreStock(maPX);
 
                 foreach (var item in dsChiTiet)
                 {

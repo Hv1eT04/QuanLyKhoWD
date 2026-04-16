@@ -15,9 +15,9 @@ namespace BLL
 
         
 
-        public void UpdateCT(int maCT, int mahang, int sl, double dg)
+        public void UpdateCT(int maCT, int mahang, int sl, decimal dg)
         {
-            dal.Update(maCT, mahang, sl, dg);
+            dal.UpdateWithStock(maCT, mahang, sl, dg);
         }
 
         public double GetTongTien(int maPX)
