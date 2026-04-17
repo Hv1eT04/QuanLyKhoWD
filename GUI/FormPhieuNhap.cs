@@ -34,7 +34,6 @@ namespace GUI
         {
             SendMessage(txtsophieu.Handle, EM_SETCUEBANNER, 0, "Số phiếu...");
             SendMessage(txtuser.Handle, EM_SETCUEBANNER, 0, "Người lập...");
-            SendMessage(txtNCC.Handle, EM_SETCUEBANNER, 0, "Nhà cung cấp...");
         }
 
         private void SetupGrid()
@@ -45,7 +44,6 @@ namespace GUI
 
             dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "maphieunhap", HeaderText = "ID", Name = "maphieunhap", Visible = false });
             dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "sophieu", HeaderText = "Số Phiếu", Name = "sophieu", Width = 100 });
-            dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "tenncc", HeaderText = "Nhà Cung Cấp", Name = "tenncc", Width = 150 });
             dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "nguoilap", HeaderText = "Người Nhập", Name = "nguoilap", Width = 120 });
             dgvPhieuNhap.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ngaytao", HeaderText = "Ngày Tạo", Name = "ngaytao", Width = 120 });
 
@@ -78,7 +76,6 @@ namespace GUI
                 txtmaPN.Text = row.Cells["maphieunhap"].Value?.ToString();
                 txtsophieu.Text = row.Cells["sophieu"].Value?.ToString();
                 txtuser.Text = row.Cells["nguoilap"].Value?.ToString();
-                txtNCC.Text = row.Cells["tenncc"].Value?.ToString();
             }
         }
 

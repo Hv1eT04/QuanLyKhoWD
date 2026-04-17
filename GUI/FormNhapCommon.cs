@@ -96,26 +96,57 @@ namespace GUI
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            if (cboHangHoa.SelectedIndex == -1) return;
-            if (!int.TryParse(txtSoLuong.Text, out int sl) || sl <= 0) return;
-            if (!decimal.TryParse(txtGiaNhap.Text, out decimal gia) || gia < 0) return;
+            // 1. Validate dữ liệu
+            if (cboHangHoa.SelectedIndex == -1) { MessageBox.Show("Vui lòng chọn hàng hóa!"); return; }
+            if (!int.TryParse(txtSoLuong.Text, out int sl) || sl <= 0) { MessageBox.Show("Số lượng không hợp lệ!"); return; }
+            if (!decimal.TryParse(txtGiaNhap.Text.Replace(",", ""), out decimal gia) || gia <= 0) { MessageBox.Show("Giá nhập không hợp lệ!"); return; }
 
             DataRowView row = (DataRowView)cboHangHoa.SelectedItem;
-            string maHangMoi = row["mahang"].ToString();
+            int maHangMoi = Convert.ToInt32(row["mahang"]);
+            string tenHang = row["tenhang"].ToString();
+            decimal giaNhapMoi = Convert.ToDecimal(txtGiaNhap.Text.Replace(",", ""));
 
-            var itemTonTai = danhSachChiTiet.FirstOrDefault(x => x.MaHang == maHangMoi);
-            if (itemTonTai != null) { itemTonTai.SoLuong += sl; itemTonTai.GiaNhap = gia; }
-            else { danhSachChiTiet.Add(new CTPhieuNhapDTO { MaHang = maHangMoi, TenHang = row["tenhang"].ToString(), SoLuong = sl, GiaNhap = gia }); }
 
+            // CHỈ gộp nếu trùng khít cả MÃ HÀNG và GIÁ NHẬP
+            var itemDaCo = danhSachChiTiet.FirstOrDefault(x =>
+                Convert.ToInt32(x.MaHang) == maHangMoi &&
+                decimal.Equals(x.GiaNhap, giaNhapMoi)
+            );
+
+            if (itemDaCo != null)
+            {
+                // Nếu trùng cả giá -> Cộng dồn số lượng vào dòng đó
+                itemDaCo.SoLuong += Convert.ToInt32(txtSoLuong.Text);
+            }
+            else
+            {
+                // Nếu GIÁ KHÁC hoặc MÃ KHÁC -> Luôn thêm dòng mới vào danh sách
+                danhSachChiTiet.Add(new CTPhieuNhapDTO
+                {
+                    MaHang = maHangMoi.ToString(),
+                    TenHang = cboHangHoa.Text,
+                    SoLuong = Convert.ToInt32(txtSoLuong.Text),
+                    GiaNhap = giaNhapMoi
+                });
+            }
             RefreshGrid();
-            txtSoLuong.Clear(); txtGiaNhap.Clear();
-            cboHangHoa.SelectedIndex = -1; cboHangHoa.Focus();
+
+            // Clear và focus để nhập tiếp
+            txtSoLuong.Clear();
+            txtGiaNhap.Clear();
+            cboHangHoa.SelectedIndex = -1;
+            cboHangHoa.Focus();
         }
 
         private void RefreshGrid()
         {
             dataGridView1.DataSource = null;
-            dataGridView1.DataSource = danhSachChiTiet;
+            // .ToList() giúp tạo ra một vùng nhớ mới, tránh việc Grid tự gộp dữ liệu cũ
+            dataGridView1.DataSource = danhSachChiTiet.ToList();
+
+            if (dataGridView1.Columns["cGia"] != null)
+                dataGridView1.Columns["cGia"].DefaultCellStyle.Format = "N0";
+
             lblTongTien.Text = $"Thành tiền: {danhSachChiTiet.Sum(x => x.ThanhTien):N0} VND";
         }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -159,8 +190,7 @@ namespace GUI
         }
 
         private void btnHuy_Click(object sender, EventArgs e) => this.Close();
-
-        private void btnLuuPhieu_Click_1(object sender, EventArgs e)
+        private void btnLuuPhieu_Click(object sender, EventArgs e)
         {
             if (cboNhaCungCap.SelectedValue == null) { MessageBox.Show("Vui lòng chọn Nhà Cung Cấp!"); return; }
             if (danhSachChiTiet.Count == 0) { MessageBox.Show("Phiếu nhập phải có ít nhất một mặt hàng!"); return; }

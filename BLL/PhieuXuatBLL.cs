@@ -20,7 +20,6 @@ namespace BLL
         }
         public bool LuuPhieuHoanChinh(string soPhieu, string ghiChu, string hoTenUser, List<CTPhieuXuatDTO> dsChiTiet)
         {
-            // 1. Lưu phiếu chính và lấy ID vừa sinh ra
             PhieuXuatDTO phieu = new PhieuXuatDTO
             {
                 SoPhieu = soPhieu,
@@ -28,18 +27,24 @@ namespace BLL
                 TenNguoiXuat = hoTenUser
             };
 
-            // Lấy Maphieuxuat từ Database sau khi chèn thành công
-            int maPXVuatTao = dal.InsertAndGetId(phieu);
+            int maPXVuaTao = dal.InsertAndGetId(phieu);
 
-            // 2. Nếu có ID hợp lệ, mới lưu các dòng chi tiết
-            if (maPXVuatTao > 0)
+            if (maPXVuaTao > 0)
             {
                 CTPhieuXuatDAL ctDal = new CTPhieuXuatDAL();
-                foreach (var item in dsChiTiet)
+                try
                 {
-                    ctDal.Insert(item, maPXVuatTao);
+                    foreach (var item in dsChiTiet)
+                    {
+                        ctDal.Insert(item, maPXVuaTao);
+                    }
+                    return true;
                 }
-                return true;
+                catch (Exception ex)
+                {
+                    dal.Delete(maPXVuaTao);
+                    throw new Exception(ex.Message);
+                }
             }
             return false;
         }
@@ -79,17 +84,24 @@ namespace BLL
         public bool CapNhatPhieu(int maPX, string ghiChu, List<CTPhieuXuatDTO> dsChiTiet)
         {
             bool updateMaster = dal.Update(maPX, ghiChu);
-
             if (updateMaster)
             {
                 CTPhieuXuatDAL ctDal = new CTPhieuXuatDAL();
+
                 ctDal.DeleteAndRestoreStock(maPX);
 
-                foreach (var item in dsChiTiet)
+                try
                 {
-                    ctDal.Insert(item, maPX);
+                    foreach (var item in dsChiTiet)
+                    {
+                        ctDal.Insert(item, maPX);
+                    }
+                    return true;
                 }
-                return true;
+                catch (Exception ex)
+                {
+                    throw new Exception("Lỗi khi cập nhật chi tiết: " + ex.Message);
+                }
             }
             return false;
         }

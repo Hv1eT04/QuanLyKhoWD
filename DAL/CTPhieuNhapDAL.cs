@@ -60,28 +60,93 @@ namespace DAL
         // 4. Thêm mới một chi tiết phiếu nhập
         public bool Insert(CTPhieuNhapDTO dto, int maPN)
         {
-            string sqlInsert = @"INSERT INTO chitietphieunhap (maphieunhap, mahang, soluong, dongianhap) 
-                               VALUES (@maphieunhap, @mahang, @soluong, @dongianhap)";
+            // 1. Lấy thông tin bản gốc - maHangThucTe khai báo là string để khớp với dto.MaHang
+            string maHangThucTe = dto.MaHang.ToString();
 
-            MySqlParameter[] sqlParams = {
-                new MySqlParameter("@maphieunhap", maPN),
-                new MySqlParameter("@mahang", dto.MaHang),
-                new MySqlParameter("@soluong", dto.SoLuong),
-                new MySqlParameter("@dongianhap", dto.GiaNhap)
+            string sqlGetGoc = "SELECT * FROM HangHoa WHERE mahang = @mh";
+            DataTable dt = db.ExecuteQuery(sqlGetGoc, new MySqlParameter("@mh", maHangThucTe));
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                decimal giaHienTai = Convert.ToDecimal(dt.Rows[0]["dongiaban"]);
+
+                // Nếu giá nhập khác giá hiện tại trong kho
+                if (giaHienTai != dto.GiaNhap)
+                {
+                    // Tăng macode và đổi tên hàng
+                    string newMaCode = GenerateRandomMaCode(dt.Rows[0]["macode"].ToString());
+                    string newTenHang = GenerateNextTenHang(dt.Rows[0]["tenhang"].ToString());
+
+                    string sqlInsertNewHang = @"INSERT INTO HangHoa (macode, tenhang, madanhmuc, donvitinh, dongiaban, tonkhohientai, muccanhbao, trangthai) 
+                                       VALUES (@macode, @tenhang, @madanhmuc, @donvitinh, @dongiaban, 0, @muccanhbao, @trangthai);
+                                       SELECT LAST_INSERT_ID();";
+
+                    MySqlParameter[] paramsNewHang = {
+                new MySqlParameter("@macode", newMaCode),
+                new MySqlParameter("@tenhang", newTenHang),
+                new MySqlParameter("@madanhmuc", dt.Rows[0]["madanhmuc"]),
+                new MySqlParameter("@donvitinh", dt.Rows[0]["donvitinh"]),
+                new MySqlParameter("@dongiaban", dto.GiaNhap),
+                new MySqlParameter("@muccanhbao", dt.Rows[0]["muccanhbao"]),
+                new MySqlParameter("@trangthai", dt.Rows[0]["trangthai"])
             };
 
-            int result = db.ExecuteNonQuery(sqlInsert, sqlParams);
+                    object newId = db.ExecuteScalar(sqlInsertNewHang, paramsNewHang);
+                    if (newId != null)
+                    {
+                        // SỬA LỖI TẠI ĐÂY: Chuyển ID mới về string
+                        maHangThucTe = newId.ToString();
+                    }
+                }
+            }
 
-            // Nếu chèn thành công -> CỘNG thêm vào kho
+            // 2. Thêm vào bảng Chi Tiết Phiếu Nhập
+            string sqlInsertCT = @"INSERT INTO chitietphieunhap (maphieunhap, mahang, soluong, dongianhap) 
+                           VALUES (@maphieunhap, @mahang, @soluong, @dongianhap)";
+
+            MySqlParameter[] sqlParams = {
+        new MySqlParameter("@maphieunhap", maPN),
+        new MySqlParameter("@mahang", maHangThucTe),
+        new MySqlParameter("@soluong", dto.SoLuong),
+        new MySqlParameter("@dongianhap", dto.GiaNhap)
+    };
+
+            int result = db.ExecuteNonQuery(sqlInsertCT, sqlParams);
+
+            // 3. Cập nhật tồn kho
             if (result > 0)
             {
                 string sqlUpdateKho = "UPDATE HangHoa SET tonkhohientai = tonkhohientai + @sl WHERE mahang = @mh";
                 db.ExecuteNonQuery(sqlUpdateKho,
                     new MySqlParameter("@sl", dto.SoLuong),
-                    new MySqlParameter("@mh", dto.MaHang));
+                    new MySqlParameter("@mh", maHangThucTe));
                 return true;
             }
             return false;
+        }
+
+        private string GenerateRandomMaCode(string currentCode)
+        {
+            string prefix = new string(currentCode.TakeWhile(c => !char.IsDigit(c)).ToArray());
+            if (string.IsNullOrEmpty(prefix)) prefix = "HH";
+
+            Random rd = new Random();
+            int randomNumber = rd.Next(100000, 999999);
+
+            return prefix + randomNumber.ToString();
+        }
+
+        private string GenerateNextTenHang(string currentName)
+        {
+            string tenGoc = currentName;
+            if (currentName.Contains(" - "))
+            {
+                tenGoc = currentName.Split(new[] { " - " }, StringSplitOptions.None)[0];
+            }
+
+            string randomSuffix = Guid.NewGuid().ToString().Substring(0, 4).ToUpper();
+
+            return $"{tenGoc} - {randomSuffix}";
         }
 
         // 5. Xóa tất cả chi tiết thuộc về một mã phiếu nhập

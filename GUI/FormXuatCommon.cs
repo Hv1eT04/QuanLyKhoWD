@@ -199,18 +199,30 @@ namespace GUI
             if (danhSachChiTiet.Count == 0) return;
 
             string hoTen = (UserResult != null) ? UserResult.hoten : "Admin";
-            bool success = false;
 
-            if (currentMode == "ADD")
-                success = bll.LuuPhieuHoanChinh(txtSoPhieu.Text, txtGhiChu.Text, hoTen, danhSachChiTiet);
-            else if (currentMode == "EDIT")
-                success = bll.CapNhatPhieu(currentMaPX, txtGhiChu.Text, danhSachChiTiet);
-
-            if (success)
+            try
             {
-                MessageBox.Show("Đã lưu dữ liệu thành công!");
-                this.DialogResult = DialogResult.OK; // Giúp Form cha reload grid
-                this.Close();
+                bool success = false;
+
+                if (currentMode == "ADD")
+                {
+                    success = bll.LuuPhieuHoanChinh(txtSoPhieu.Text, txtGhiChu.Text, hoTen, danhSachChiTiet);
+                }
+                else if (currentMode == "EDIT")
+                {
+                    success = bll.CapNhatPhieu(currentMaPX, txtGhiChu.Text, danhSachChiTiet);
+                }
+
+                if (success)
+                {
+                    MessageBox.Show("Đã lưu dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Cảnh báo thiếu kho", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

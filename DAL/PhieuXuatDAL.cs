@@ -36,7 +36,7 @@ namespace DAL
                 new MySqlParameter("@nguoilap", idNguoiLap),
                 new MySqlParameter("@ngaytao", DateTime.Now),
                 new MySqlParameter("@ghichu", dto.GhiChu),
-                new MySqlParameter("@trangthai", "hoanthanh")
+                new MySqlParameter("@trangthai", dto.TrangThai)
             };
 
             object result = db.ExecuteScalar(sql, sqlParams);

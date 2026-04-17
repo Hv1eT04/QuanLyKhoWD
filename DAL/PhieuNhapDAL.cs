@@ -105,5 +105,16 @@ namespace DAL
             object result = db.ExecuteScalar(sql);
             return result?.ToString();
         }
+        public decimal GetGiaHienTai(string maHang)
+        {
+            // Lấy đơn giá nhập của lần nhập gần nhất dựa vào ID phiếu nhập lớn nhất
+            string sql = @"SELECT dongianhap FROM chitietphieunhap 
+                   WHERE mahang = @mahang 
+                   ORDER BY MaPhieuNhap DESC LIMIT 1";
+
+            object result = db.ExecuteScalar(sql, new MySqlParameter("@mahang", maHang));
+
+            return result != null ? Convert.ToDecimal(result) : 0;
+        }
     }
 }

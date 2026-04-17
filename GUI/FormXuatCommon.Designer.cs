@@ -57,7 +57,7 @@
             this.txtGhiChu.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtGhiChu.Location = new System.Drawing.Point(340, 45);
             this.txtGhiChu.Name = "txtGhiChu";
-            this.txtGhiChu.Size = new System.Drawing.Size(500, 25);
+            this.txtGhiChu.Size = new System.Drawing.Size(500, 30);
             this.txtGhiChu.TabIndex = 3;
             // 
             // label2
@@ -66,7 +66,7 @@
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label2.Location = new System.Drawing.Point(337, 27);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 15);
+            this.label2.Size = new System.Drawing.Size(61, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "Ghi chú:";
             // 
@@ -78,7 +78,7 @@
             this.txtSoPhieu.Location = new System.Drawing.Point(18, 45);
             this.txtSoPhieu.Name = "txtSoPhieu";
             this.txtSoPhieu.ReadOnly = true;
-            this.txtSoPhieu.Size = new System.Drawing.Size(200, 25);
+            this.txtSoPhieu.Size = new System.Drawing.Size(200, 30);
             this.txtSoPhieu.TabIndex = 1;
             this.txtSoPhieu.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -88,7 +88,7 @@
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label1.Location = new System.Drawing.Point(15, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 15);
+            this.label1.Size = new System.Drawing.Size(70, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Số phiếu:";
             // 
@@ -120,7 +120,7 @@
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(140, 30);
             this.btnThem.TabIndex = 6;
-            this.btnThem.Text = "+ THÊM HÀNG";
+            this.btnThem.Text = "+ THÊM ";
             this.btnThem.UseVisualStyleBackColor = false;
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
             // 
@@ -129,7 +129,7 @@
             this.txtGiaXuat.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtGiaXuat.Location = new System.Drawing.Point(490, 48);
             this.txtGiaXuat.Name = "txtGiaXuat";
-            this.txtGiaXuat.Size = new System.Drawing.Size(180, 25);
+            this.txtGiaXuat.Size = new System.Drawing.Size(180, 30);
             this.txtGiaXuat.TabIndex = 5;
             // 
             // label5
@@ -138,7 +138,7 @@
             this.label5.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label5.Location = new System.Drawing.Point(487, 30);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 15);
+            this.label5.Size = new System.Drawing.Size(66, 20);
             this.label5.TabIndex = 4;
             this.label5.Text = "Giá xuất:";
             // 
@@ -147,7 +147,7 @@
             this.txtSoLuong.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtSoLuong.Location = new System.Drawing.Point(340, 48);
             this.txtSoLuong.Name = "txtSoLuong";
-            this.txtSoLuong.Size = new System.Drawing.Size(120, 25);
+            this.txtSoLuong.Size = new System.Drawing.Size(120, 30);
             this.txtSoLuong.TabIndex = 3;
             // 
             // label3
@@ -156,7 +156,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label3.Location = new System.Drawing.Point(337, 30);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 15);
+            this.label3.Size = new System.Drawing.Size(72, 20);
             this.label3.TabIndex = 2;
             this.label3.Text = "Số lượng:";
             // 
@@ -169,7 +169,7 @@
             this.cboHangHoa.FormattingEnabled = true;
             this.cboHangHoa.Location = new System.Drawing.Point(18, 48);
             this.cboHangHoa.Name = "cboHangHoa";
-            this.cboHangHoa.Size = new System.Drawing.Size(300, 25);
+            this.cboHangHoa.Size = new System.Drawing.Size(300, 31);
             this.cboHangHoa.TabIndex = 1;
             // 
             // label4
@@ -178,7 +178,7 @@
             this.label4.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label4.Location = new System.Drawing.Point(15, 30);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 15);
+            this.label4.Size = new System.Drawing.Size(112, 20);
             this.label4.TabIndex = 0;
             this.label4.Text = "Chọn hàng hóa:";
             // 
@@ -191,7 +191,7 @@
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -248,7 +248,7 @@
             this.lblTongTien.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblTongTien.Location = new System.Drawing.Point(15, 15);
             this.lblTongTien.Name = "lblTongTien";
-            this.lblTongTien.Size = new System.Drawing.Size(166, 25);
+            this.lblTongTien.Size = new System.Drawing.Size(161, 32);
             this.lblTongTien.TabIndex = 0;
             this.lblTongTien.Text = "Tổng: 0 VNĐ";
             // 
@@ -266,7 +266,7 @@
             // 
             // FormXuatCommon
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(251)))));
             this.ClientSize = new System.Drawing.Size(884, 580);

@@ -143,7 +143,7 @@
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(140, 30);
             this.btnThem.TabIndex = 6;
-            this.btnThem.Text = "+ THÊM DÒNG";
+            this.btnThem.Text = "+ THÊM ";
             this.btnThem.UseVisualStyleBackColor = false;
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
             // 
@@ -245,7 +245,7 @@
             this.btnLuuPhieu.TabIndex = 1;
             this.btnLuuPhieu.Text = "LƯU PHIẾU";
             this.btnLuuPhieu.UseVisualStyleBackColor = false;
-            this.btnLuuPhieu.Click += new System.EventHandler(this.btnLuuPhieu_Click_1);
+            this.btnLuuPhieu.Click += new System.EventHandler(this.btnLuuPhieu_Click);
             // 
             // lblTongTien
             // 

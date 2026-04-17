@@ -6,7 +6,7 @@ namespace DAL
 {
     public class DatabaseHelper
     {
-        private string connectionString = "Server=localhost;Port=3306;Database=quanlykhohangdb;Uid=root;Pwd=123456;Charset=utf8;";
+        private string connectionString = "Server=localhost;Port=3306;Database=quanlykhodb;Uid=root;Pwd=12346;Charset=utf8;";
 
         // SELECT - No parameters
         public DataTable ExecuteQuery(string sql)
@@ -63,15 +63,23 @@ namespace DAL
         public object ExecuteScalar(string sql, params MySqlParameter[] parameters)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(sql, conn))
             {
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                try
                 {
                     conn.Open();
-                    if (parameters != null)
+
+                    if (parameters != null && parameters.Length > 0)
                     {
                         cmd.Parameters.AddRange(parameters);
                     }
+
                     return cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    // Log hoặc hiển thị lỗi để debug
+                    throw new Exception("Lỗi ExecuteScalar: " + ex.Message, ex);
                 }
             }
         }

@@ -48,7 +48,7 @@ namespace BLL
                 }
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 // Ghi log lỗi nếu cần thiết
                 return false;
@@ -145,6 +145,10 @@ namespace BLL
                 return 0;
 
             return Convert.ToDecimal(result);
+        }
+        public decimal GetGiaHienTai(string maHang)
+        {
+            return dal.GetGiaHienTai(maHang);
         }
     }
 }
